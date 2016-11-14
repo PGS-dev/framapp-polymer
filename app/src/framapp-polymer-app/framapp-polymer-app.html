@@ -1,0 +1,93 @@
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+<link rel="import" href="../../bower_components/app-layout/app-header/app-header.html">
+<link rel="import" href="../../bower_components/app-layout/app-toolbar/app-toolbar.html">
+<link rel="import" href="../../bower_components/iron-ajax/iron-ajax.html">
+<link rel="import" href="../../bower_components/app-route/app-location.html">
+<link rel="import" href="../../bower_components/app-route/app-route.html">
+
+<link rel="import" href="category-selector.html">
+
+<dom-module id="framapp-polymer-app">
+  <template>
+      <style>
+          :host {
+              display: block;
+          }
+
+          app-header {
+              @apply(--layout-fixed-top);
+              z-index: 1;
+              height: 64px;
+              line-height: 64px;
+              background-color: #ebebeb;
+              -webkit-backdrop-filter: saturate(180%) blur(20px);
+          }
+
+          .title {
+               text-decoration: none;
+              color: black;
+          }
+
+          app-drawer {
+              white-space: nowrap;
+              margin-top: 64px;
+              padding-left: 10px;
+              display: inline-block;
+              background-color: #dbd9d9;
+              --app-drawer-width: 200px;
+              --app-drawer-scrim-background: #ebebeb;
+              --app-drawer-content-container: {
+                background-color: transparent;
+              }
+          }
+
+      </style>
+      <app-location route="{{route}}"></app-location>
+      <app-route route="{{route}}"
+                 pattern="/:page"
+                 data="{{routeData}}"
+                 tail="{{subroute}}"></app-route>
+      <iron-ajax auto
+                 url="https://project-5613440220430148247.firebaseio.com/api/v1/categories.json"
+                 handle-as="json"
+                 on-response="_onCategoryResponse"></iron-ajax>
+      <app-header condenses fixed>
+          <app-toolbar style="height: 64px;">
+              <a href="/" class="title"><div main-title>FramApp</div></a>
+          </app-toolbar>
+      </app-header>
+      <app-drawer opened>
+          <h4>Categories</h4>
+          <category-selector
+              categories="[[categories]]"
+              category="{{category}}"></category-selector>
+      </app-drawer>
+  </template>
+
+  <script>
+    Polymer({
+
+      is: 'framapp-polymer-app',
+
+      properties: {
+        categories: {
+            type: Array,
+            value: function () {
+                return [];
+            }
+        },
+        category: {
+            type: Object,
+        },
+      },
+
+      _onCategoryResponse: function (e) {
+          var categories = e.detail.response;
+          for (property in categories) {
+              this.push('categories', categories[property]);
+          }
+      },
+
+    });
+  </script>
+</dom-module>

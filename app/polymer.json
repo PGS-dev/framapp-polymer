@@ -1,0 +1,16 @@
+{
+  "entrypoint": "index.html",
+  "shell": "src/framapp-polymer-app/framapp-polymer-app.html",
+  "fragments": [
+  ],
+  "sourceGlobs": [
+   "src/**/*",
+   "bower.json",
+   "app.yaml"
+  ],
+  "includeDependencies": [
+    "manifest.json",
+    "images/*",
+    "bower_components/webcomponentsjs/webcomponents-lite.js"
+  ]
+}

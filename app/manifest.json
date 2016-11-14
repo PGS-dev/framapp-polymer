@@ -1,0 +1,6 @@
+{
+  "name": "framapp-polymer",
+  "short_name": "framapp-polymer",
+  "start_url": "/",
+  "display": "standalone"
+}
