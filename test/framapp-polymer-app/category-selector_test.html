@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, minimum-scale=1, initial-scale=1, user-scalable=yes">
+
+    <title>category-selector test</title>
+
+    <script src="../../../webcomponentsjs/webcomponents-lite.js"></script>
+    <script src="../../../web-component-tester/browser.js"></script>
+
+    <link rel="import" href="../../src/framapp-polymer-app/category-selector.html">
+  </head>
+  <body>
+    <test-fixture id="category-selector-fixure">
+      <template>
+        <category-selector></category-selector>
+      </template>
+    </test-fixture>
+
+    <script>
+      suite('category-selector', function() {
+          var selector;
+          var categories =JSON.stringify(            
+            {                
+                  "phones": {"description": "Simple Phones description", "id": "phones", "title": "Phones"},                
+                  "televisions": {"description": "Televisions description",    "id": "televisions",    "title": "Television"  }            
+            });
+
+            setup(function(){
+                selector = fixture('category-selector-fixure');
+                assert.equal(selector.is, 'category-selector');
+                selector.setAttribute('categories', categories);
+                Polymer.dom.flush();
+            });
+            
+            test('should set the category on click', function() {
+                var buttons = Polymer.dom(selector.root).querySelectorAll('.nav li');
+                buttons.forEach(function(item){
+                    item.click();
+                    expect(selector.category).to.be.equal(item.name);
+                });
+            });
+      });
+    </script>
+  </body>
+</html>
