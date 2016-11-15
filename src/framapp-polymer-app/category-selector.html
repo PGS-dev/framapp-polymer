@@ -13,7 +13,7 @@
                 height: 100%;
             }
 
-                .nav a {
+                .nav div {
                     color: black;
                     text-decoration: none;
                     font-weight: 300;
@@ -21,21 +21,22 @@
                     display: inline-block;
                     transform-origin: right center;
                     transition: transform 0.2s;
+                    cursor: pointer;
                 }
 
-                    .nav a:hover {
+                    .nav div:hover {
                         transform: scale3d(1.2, 1.2, 1);
                     }
 
-            .active a {
+            .active div {
                 color: white;
                 font-weight: bold;
             }
         </style>
         <ul class="nav" role="navigation">
-            <iron-selector selected="{{category.id}}" attr-for-selected="name" selected-class="active">
-                <template is="dom-repeat" items="[[categories]]" as="category">
-                    <li name="[[category.id]]"><a href="/categories/[[category.id]]">[[category.title]]</a></li>
+            <iron-selector selected="{{category}}" attr-for-selected="name" selected-class="active">
+                <template is="dom-repeat" items="[[toArray(categories)]]" as="category">
+                    <li name="[[category.id]]"><div>[[category.title]]</div></li>
                 </template>
             </iron-selector>
         </ul>
@@ -46,10 +47,22 @@
             is: 'category-selector',
 
             properties: {
-                categories: Object,
-                category: Object,
+                categories: Array,
+                category: {
+                    type: String,
+                    notify: true
+                    }
             },
 
+            toArray: function(obj){
+                return Object.keys(obj).map(function(key){
+                    return{
+                        id: key,
+                        title: obj[key].title,
+                        description: obj[key].description
+                    }
+                })
+            }
         });
     </script>
 </dom-module>
