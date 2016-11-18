@@ -1,0 +1,62 @@
+<link rel="import" href="/bower_components/polymer/polymer.html">
+<link rel="import" href="/bower_components/paper-card/paper-card.html">
+<link rel="import" href="/bower_components/iron-icons/maps-icons.html">
+
+<!--
+`fp-product-card`
+
+
+@demo /demo/fp-product-card-demo.html 
+-->
+
+<dom-module id="fp-product-card">
+  <template>
+    <style>
+      :host {
+        display: inline-block;
+        position: relative;
+
+        --iron-icon-fill-color: yellow;
+        --iron-icon: {
+          position: absolute;
+          z-index: 1;
+          top: 10px;
+          right: 10px;
+        };
+      }
+
+      .big {
+        --iron-icon-height: 32px;
+        --iron-icon-width: 32px;
+      }
+    </style>
+    <iron-icon class="big" icon="icons:star" hidden$="[[!product.promoted]]"></iron-icon>
+    <paper-card image="[[product.imageUrl]]" alt="image">
+      <div class="card-content">[[product.title]]</div>
+    </paper-card>
+  </template>
+  <script>
+    Polymer({
+
+      is: 'fp-product-card',
+
+      properties: {
+        product:{
+          type: Object,
+          value: function() {
+            return {
+              amount: Number,
+              category: String,
+              description: String,
+              id: String,
+              imageUrl: String,
+              price: String,
+              promoted: Boolean,
+              title: String
+            }
+          }
+        },
+      },
+    });
+  </script>
+</dom-module>
