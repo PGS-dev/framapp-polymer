@@ -1,0 +1,17 @@
+<link rel="import" href="">
+
+<dom-module id="login">
+    <template>
+        <firebase-app auth-domain="polymerfire-test.firebaseapp.com"
+        database-url="https://polymerfire-test.firebaseio.com/"
+        api-key="AIzaSyDTP-eiQezleFsV2WddFBAhF_WEzx_8v_g"></firebase-app>
+      <firebase-auth id="auth" user="{{user}}" provider="google" on-error="showError"></firebase-auth>
+      <button>aaaa</button>
+    </template>
+    <script>
+        Polymer({
+            is: 'login',
+            properties:{}
+        });
+    </script>
+</dom-module>
