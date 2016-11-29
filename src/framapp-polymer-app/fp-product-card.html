@@ -1,12 +1,12 @@
-<link rel="import" href="/bower_components/polymer/polymer.html">
-<link rel="import" href="/bower_components/paper-card/paper-card.html">
-<link rel="import" href="/bower_components/iron-icons/maps-icons.html">
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+<link rel="import" href="../../bower_components/paper-card/paper-card.html">
+<link rel="import" href="../../bower_components/iron-icon/iron-icon.html">
 
 <!--
 `fp-product-card`
 
 
-@demo /demo/fp-product-card-demo.html 
+@demo ../demo/fp-product-card-demo.html 
 -->
 
 <dom-module id="fp-product-card">
@@ -41,21 +41,7 @@
       is: 'fp-product-card',
 
       properties: {
-        product:{
-          type: Object,
-          value: function() {
-            return {
-              amount: Number,
-              category: String,
-              description: String,
-              id: String,
-              imageUrl: String,
-              price: String,
-              promoted: Boolean,
-              title: String
-            }
-          }
-        },
+        product: Object,
       },
     });
   </script>
