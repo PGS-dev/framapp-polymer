@@ -21,7 +21,7 @@
                 height: 100%;
             }
 
-                .nav div {
+                .nav a {
                     color: black;
                     text-decoration: none;
                     font-weight: 300;
@@ -32,26 +32,26 @@
                     cursor: pointer;
                 }
 
-                    .nav div:hover {
+                    .nav a:hover {
                         transform: scale3d(1.2, 1.2, 1);
                     }
 
-            .active div {
+            .active a {
                 color: white;
                 font-weight: bold;
             }
         </style>
         <ul class="nav" role="navigation">
             <iron-selector selected="{{category}}" attr-for-selected="name" selected-class="active">
-                <template is="dom-repeat" items="[[toArray(categories)]]" as="category">
-                    <li name="[[category.id]]"><div>[[category.title]]</div></li>
+                <template is="dom-repeat" items="[[categories]]" as="category">
+                    <li name="[[category.id]]"><a href="/categories/[[category.id]]">[[category.title]]</a></li>
                 </template>
             </iron-selector>
         </ul>
     </template>
     <script>
         Polymer({
-
+            
             is: 'category-selector',
 
             properties: {
@@ -61,16 +61,6 @@
                     notify: true
                     }
             },
-
-            toArray: function(obj){
-                return Object.keys(obj).map(function(key){
-                    return{
-                        id: key,
-                        title: obj[key].title,
-                        description: obj[key].description
-                    }
-                })
-            }
         });
     </script>
 </dom-module>
