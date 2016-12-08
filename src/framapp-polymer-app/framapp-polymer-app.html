@@ -5,7 +5,7 @@
 <link rel="import" href="../../bower_components/app-route/app-route.html">
 
 <link rel="import" href="category-selector.html">
-<link rel="import" href="fp-data-store.html">
+<link rel="import" href="fp-categories-store.html">
 
 <dom-module id="framapp-polymer-app">
   <template>
@@ -47,7 +47,7 @@
                  pattern="/:page"
                  data="{{routeData}}"
                  tail="{{subroute}}"></app-route>
-      <fp-data-store source-url="https://project-5613440220430148247.firebaseio.com/api/v1/categories.json" categories={{categories}}></fp-data-store>
+      <fp-categories-store categories={{categories}}></fp-categories-store>
       <app-header condenses fixed>
           <app-toolbar style="height: 64px;">
               <a href="/" class="title"><div main-title>FramApp</div></a>
