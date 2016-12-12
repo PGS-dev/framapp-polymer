@@ -1,4 +1,7 @@
 <link rel="import" href="../../bower_components/polymer/polymer.html">
+<link rel="import" href="../../bower_components/app-layout/app-drawer-layout/app-drawer-layout.html">
+<link rel="import" href="../../bower_components/app-layout/app-drawer/app-drawer.html">
+<link rel="import" href="../../bower_components/app-layout/app-header-layout/app-header-layout.html">
 <link rel="import" href="../../bower_components/app-layout/app-header/app-header.html">
 <link rel="import" href="../../bower_components/app-layout/app-toolbar/app-toolbar.html">
 <link rel="import" href="../../bower_components/app-route/app-location.html">
@@ -6,6 +9,8 @@
 
 <link rel="import" href="category-selector.html">
 <link rel="import" href="fp-categories-store.html">
+<link rel="import" href="fp-products-store.html">
+<link rel="import" href="fp-product-card.html">
 
 <dom-module id="framapp-polymer-app">
   <template>
@@ -44,21 +49,30 @@
       </style>
       <app-location route="{{route}}"></app-location>
       <app-route route="{{route}}"
-                 pattern="/:page"
-                 data="{{routeData}}"
+                 pattern="/categories/:category"
+                 data="{{category}}"
                  tail="{{subroute}}"></app-route>
       <fp-categories-store categories={{categories}}></fp-categories-store>
-      <app-header condenses fixed>
-          <app-toolbar style="height: 64px;">
-              <a href="/" class="title"><div main-title>FramApp</div></a>
-          </app-toolbar>
-      </app-header>
-      <app-drawer opened>
-          <h4>Categories</h4>
-          <category-selector
-              categories="[[categories]]"
-              category="{{category}}"></category-selector>
-      </app-drawer>
+      <fp-products-store products={{products}} 
+                         ategory=[[category.category]]></fp-products-store>
+      
+      <app-header-layout>
+          <app-header fixed>
+              <app-toolbar>
+                  <a href="/" class="title"><div main-title>FramApp</div></a>
+              </app-toolbar>
+          </app-header>
+          <app-drawer-layout>
+              <app-drawer opened>
+                  <h4>Categories</h4>
+                  <category-selector
+                  categories="[[categories]]"></category-selector>
+              </app-drawer>
+              <template is="dom-repeat" items="[[products]]" as="product">
+                  <fp-product-card product="[[product]]"></fp-product-card>
+              </template>
+          </app-drawer-layout>
+      </app-header-layout>
   </template>
 
   <script>

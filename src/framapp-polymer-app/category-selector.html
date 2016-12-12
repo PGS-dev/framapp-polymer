@@ -43,6 +43,7 @@
         </style>
         <ul class="nav" role="navigation">
             <iron-selector selected="{{category}}" attr-for-selected="name" selected-class="active">
+                <li name=""><a href="/categories/">All</a></li>
                 <template is="dom-repeat" items="[[categories]]" as="category">
                     <li name="[[category.id]]"><a href="/categories/[[category.id]]">[[category.title]]</a></li>
                 </template>
