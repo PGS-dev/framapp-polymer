@@ -1,17 +1,32 @@
-<link rel="import" href="">
+<link rel="import" href="../../bower_components/polymerfire/firebase-app">
+<link rel="import" href="../../bower_components/polymerfire/firebase-auth">
 
-<dom-module id="login">
+<dom-module id="login-component">
     <template>
-        <firebase-app auth-domain="polymerfire-test.firebaseapp.com"
-        database-url="https://polymerfire-test.firebaseio.com/"
-        api-key="AIzaSyDTP-eiQezleFsV2WddFBAhF_WEzx_8v_g"></firebase-app>
-      <firebase-auth id="auth" user="{{user}}" provider="google" on-error="showError"></firebase-auth>
-      <button>aaaa</button>
+      <style>
+
+      </style>
+      <firebase-app
+        auth-domain="project-5613440220430148247.firebaseapp.com"
+        database-url="https://project-5613440220430148247.firebaseio.com"
+        api-key="AIzaSyBKP4cOP508h0JLKmjFvzJooO0MqV8l4fU">
+      </firebase-app>
+      <firebase-auth id="auth" user="{{user}}" provider="google" on-error="handleError">
+      </firebase-auth>
+      <button on-tap="handleClick">Login</button>
     </template>
     <script>
         Polymer({
-            is: 'login',
-            properties:{}
+            is: 'login-component',
+            properties:{},
+            handleClick: function(){
+              //https://github.com/firebase/polymerfire/blob/master/firebase-auth.html
+              this.$.auth.signInWithEmailAndPassword("framapp@pgs-soft.com", "password")
+                  .then(function(response) {// successful authentication response here
+                    })
+                  .catch(function(error) {// unsuccessful authentication response here
+                    });
+            }
         });
     </script>
 </dom-module>
