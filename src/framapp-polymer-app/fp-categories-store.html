@@ -1,0 +1,27 @@
+<link rel="import" href="../../bower_components/iron-ajax/iron-ajax.html">
+<link rel="import" href="toarray-behavior.html">
+
+<dom-module id="fp-categories-store">
+    <template>
+        <iron-ajax auto
+            url="https://project-5613440220430148247.firebaseio.com/api/v1/categories.json"
+            handle-as="json"
+            last-response="{{response}}"></iron-ajax>
+    </template>
+    <script>
+        Polymer({
+
+            is: 'fp-categories-store',
+            behaviors: [toarrayBehavior],
+            properties: {
+                response: Object,
+                categories: {
+                    type: Array,
+                    notify: true,
+                    computed: '_toArray(response)',
+                },
+            },
+            
+        });
+    </script>
+</dom-module>
