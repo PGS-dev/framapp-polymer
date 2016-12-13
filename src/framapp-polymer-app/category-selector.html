@@ -1,5 +1,6 @@
 ﻿<link rel="import" href="../../bower_components/polymer/polymer.html">
 <link rel="import" href="../../bower_components/iron-selector/iron-selector.html">
+<link rel="import" href="../../bower_components/paper-item/paper-item.html">
 
 <!--
 `category-selector`
@@ -15,40 +16,27 @@
                 display: block;
             }
 
-            .nav {
-                list-style: none;
-                padding-right: 50px;
-                height: 100%;
+            a {
+                text-decoration: none;
             }
-
-                .nav a {
+            paper-item {
+                text-decoration: none;
+                --paper-item:{
                     color: black;
                     text-decoration: none;
-                    font-weight: 300;
-                    line-height: 32px;
-                    display: inline-block;
-                    transform-origin: right center;
-                    transition: transform 0.2s;
-                    cursor: pointer;
                 }
-
-                    .nav a:hover {
-                        transform: scale3d(1.2, 1.2, 1);
-                    }
-
-            .active a {
-                color: white;
-                font-weight: bold;
             }
         </style>
-        <ul class="nav" role="navigation">
-            <iron-selector selected="{{category}}" attr-for-selected="name" selected-class="active">
-                <li name=""><a href="/categories/">All</a></li>
-                <template is="dom-repeat" items="[[categories]]" as="category">
-                    <li name="[[category.id]]"><a href="/categories/[[category.id]]">[[category.title]]</a></li>
-                </template>
-            </iron-selector>
-        </ul>
+        <iron-selector selected="{{category}}" attr-for-selected="name">
+            <a href="/categories/" tabIndex="-1" name="">
+                <paper-item>All</paper-item>
+            </a>
+            <template is="dom-repeat" items="[[categories]]" as="category">
+                <a href="/categories/[[category.id]]" tabIndex="-1" name="[[category.id]]">
+                    <paper-item>[[category.title]]</paper-item>
+                </a>
+            </template>
+        </iron-selector>
     </template>
     <script>
         Polymer({

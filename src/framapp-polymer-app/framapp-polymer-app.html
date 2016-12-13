@@ -6,6 +6,7 @@
 <link rel="import" href="../../bower_components/app-layout/app-toolbar/app-toolbar.html">
 <link rel="import" href="../../bower_components/app-route/app-location.html">
 <link rel="import" href="../../bower_components/app-route/app-route.html">
+<link rel="import" href="../../bower_components/paper-icon-button/paper-icon-button.html">
 
 <link rel="import" href="category-selector.html">
 <link rel="import" href="fp-categories-store.html">
@@ -31,19 +32,23 @@
           .title {
                text-decoration: none;
               color: black;
+              position: absolute;
+              left: 40px;
           }
 
           app-drawer {
               white-space: nowrap;
               margin-top: 64px;
-              padding-left: 10px;
-              display: inline-block;
-              background-color: #dbd9d9;
+              z-index: 2;
               --app-drawer-width: 200px;
-              --app-drawer-scrim-background: #ebebeb;
+              --app-drawer-scrim-background: rgba(235, 235, 235, 0.5);
               --app-drawer-content-container: {
-                background-color: transparent;
+                background-color: #dbd9d9;
               }
+          }
+
+          fp-product-card {
+              padding: 4px;
           }
 
       </style>
@@ -58,12 +63,11 @@
       
       <app-header-layout>
           <app-header fixed>
-              <app-toolbar>
-                  <a href="/" class="title"><div main-title>FramApp</div></a>
-              </app-toolbar>
+              <paper-icon-button icon="icons:menu" active="{{drawerOpened}}" hidden$="[[!drawerOpened]]"></paper-icon-button>
+              <a href="/" class="title"><div main-title>FramApp</div></a>
           </app-header>
           <app-drawer-layout>
-              <app-drawer opened>
+              <app-drawer opened="{{!drawerOpened}}">
                   <h4>Categories</h4>
                   <category-selector
                   categories="[[categories]]"></category-selector>
