@@ -13,14 +13,14 @@
   <template>
     <style>
       :host {
-        display: inline-block;
+        display: block;
       }
     
       fp-product-card {
         padding: 4px;
       }
     </style>
-        <template is="dom-repeat" items="[[products]]" as="product">
+        <template is="dom-repeat" items="[[_promoted]]" as="product">
             <fp-product-card product="[[product]]"></fp-product-card>
         </template>
   </template>
@@ -30,15 +30,15 @@
       is: 'fp-home-page',
 
       properties: {
-          allProducts: Array,
-          products:{
+          products: Array,
+          _promoted:{
               type: Array,
-              computed: '_getPromoted(allProducts)'
+              computed: '_getPromoted(products)'
             }
       },
 
       _getPromoted: function(){
-        return this.allProducts.filter(this._filterPromoted)
+        return this.products.filter(this._filterPromoted)
       },
 
       _filterPromoted: function(element, index, array){
