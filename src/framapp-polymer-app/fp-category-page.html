@@ -26,7 +26,7 @@
                    pattern="/:id"
                    data="{{category}}"></app-route>
 
-        <template is="dom-repeat" items="[[products]]" as="product">
+        <template is="dom-repeat" items="[[_filteredProducts]]" as="product">
             <fp-product-card product="[[product]]"></fp-product-card>
         </template>
   </template>
@@ -37,15 +37,15 @@
 
       properties: {
 
-          allProducts: Array,
-          products:{
+          products: Array,
+          _filteredProducts:{
               type: Array,
-              computed: '_getFiltered(allProducts, category.id)'
+              computed: '_getFiltered(products, category.id)'
             }
       },
 
       _getFiltered: function(){
-        return this.allProducts.filter(this._filterByCategory, this)
+        return this.products.filter(this._filterByCategory, this)
       },
 
       _filterByCategory: function(element, index, array){
