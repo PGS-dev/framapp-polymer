@@ -28,9 +28,6 @@
             }
         </style>
         <iron-selector selected="{{category}}" attr-for-selected="name">
-            <a href="/categories/" tabIndex="-1" name="">
-                <paper-item>All</paper-item>
-            </a>
             <template is="dom-repeat" items="[[categories]]" as="category">
                 <a href="/categories/[[category.id]]" tabIndex="-1" name="[[category.id]]">
                     <paper-item>[[category.title]]</paper-item>

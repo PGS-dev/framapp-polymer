@@ -1,0 +1,49 @@
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+
+<link rel="import" href="fp-product-card.html">
+
+<!--
+`fp-home-page`
+
+
+@demo ../demo/fp-home-page-demo.html 
+-->
+
+<dom-module id="fp-home-page">
+  <template>
+    <style>
+      :host {
+        display: inline-block;
+      }
+    
+      fp-product-card {
+        padding: 4px;
+      }
+    </style>
+        <template is="dom-repeat" items="[[products]]" as="product">
+            <fp-product-card product="[[product]]"></fp-product-card>
+        </template>
+  </template>
+  <script>
+    Polymer({
+
+      is: 'fp-home-page',
+
+      properties: {
+          allProducts: Array,
+          products:{
+              type: Array,
+              computed: '_getPromoted(allProducts)'
+            }
+      },
+
+      _getPromoted: function(){
+        return this.allProducts.filter(this._filterPromoted)
+      },
+
+      _filterPromoted: function(element, index, array){
+        return element.promoted;
+      }
+    });
+  </script>
+</dom-module>

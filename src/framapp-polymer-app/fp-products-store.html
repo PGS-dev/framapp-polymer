@@ -23,16 +23,8 @@
                 products: {
                     type: Array,
                     notify: true,
-                    computed: '_getFiltered(category, response)',
+                    computed: '_toArray(response)',
                 },
-            },
-
-            _getFiltered: function(){
-                return toarrayBehavior._toArray(this.response).filter(this._filterByCategory, this);
-            },
-
-            _filterByCategory: function(element, index, array){
-                return element.category == this.category || this.category == '';
             },
         });
     </script>
