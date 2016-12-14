@@ -1,0 +1,56 @@
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+<link rel="import" href="../../bower_components/app-route/app-route.html">
+
+<link rel="import" href="fp-product-card.html">
+
+<!--
+`fp-category-page`
+
+
+@demo ../demo/fp-category-page-demo.html 
+-->
+
+<dom-module id="fp-category-page">
+  <template>
+    <style>
+      :host {
+        display: block;
+      }
+
+      fp-product-card {
+        padding: 4px;
+      }
+      
+    </style>
+        <app-route route="{{subroute}}"
+                   pattern="/:id"
+                   data="{{category}}"></app-route>
+
+        <template is="dom-repeat" items="[[_filteredProducts]]" as="product">
+            <fp-product-card product="[[product]]"></fp-product-card>
+        </template>
+  </template>
+  <script>
+    Polymer({
+
+      is: 'fp-category-page',
+
+      properties: {
+
+          products: Array,
+          _filteredProducts:{
+              type: Array,
+              computed: '_getFiltered(products, category.id)'
+            }
+      },
+
+      _getFiltered: function(){
+        return this.products.filter(this._filterByCategory, this)
+      },
+
+      _filterByCategory: function(element, index, array){
+          return element.category == this.category.id;
+      },
+    });
+  </script>
+</dom-module>

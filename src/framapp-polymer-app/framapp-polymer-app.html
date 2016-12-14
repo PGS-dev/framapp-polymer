@@ -1,11 +1,19 @@
 <link rel="import" href="../../bower_components/polymer/polymer.html">
+<link rel="import" href="../../bower_components/app-layout/app-drawer-layout/app-drawer-layout.html">
+<link rel="import" href="../../bower_components/app-layout/app-drawer/app-drawer.html">
+<link rel="import" href="../../bower_components/app-layout/app-header-layout/app-header-layout.html">
 <link rel="import" href="../../bower_components/app-layout/app-header/app-header.html">
-<link rel="import" href="../../bower_components/app-layout/app-toolbar/app-toolbar.html">
 <link rel="import" href="../../bower_components/app-route/app-location.html">
 <link rel="import" href="../../bower_components/app-route/app-route.html">
+<link rel="import" href="../../bower_components/paper-icon-button/paper-icon-button.html">
+<link rel="import" href="../../bower_components/iron-pages/iron-pages.html">
 
 <link rel="import" href="category-selector.html">
 <link rel="import" href="fp-categories-store.html">
+<link rel="import" href="fp-products-store.html">
+<link rel="import" href="fp-home-page.html">
+<link rel="import" href="fp-category-page.html">
+
 
 <dom-module id="framapp-polymer-app">
   <template>
@@ -26,19 +34,24 @@
           .title {
                text-decoration: none;
               color: black;
+              position: absolute;
+              left: 40px;
           }
 
           app-drawer {
               white-space: nowrap;
               margin-top: 64px;
-              padding-left: 10px;
-              display: inline-block;
-              background-color: #dbd9d9;
+              z-index: 2;
               --app-drawer-width: 200px;
-              --app-drawer-scrim-background: #ebebeb;
+              --app-drawer-scrim-background: rgba(235, 235, 235, 0.5);
               --app-drawer-content-container: {
-                background-color: transparent;
+                background-color: #dbd9d9;
               }
+          }
+
+          .app-drawer-wrapper {
+              height: 100%;
+              overflow-y: auto;
           }
 
       </style>
@@ -48,17 +61,37 @@
                  data="{{routeData}}"
                  tail="{{subroute}}"></app-route>
       <fp-categories-store categories={{categories}}></fp-categories-store>
-      <app-header condenses fixed>
-          <app-toolbar style="height: 64px;">
-              <a href="/" class="title"><div main-title>FramApp</div></a>
-          </app-toolbar>
-      </app-header>
-      <app-drawer opened>
-          <h4>Categories</h4>
-          <category-selector
-              categories="[[categories]]"
-              category="{{category}}"></category-selector>
-      </app-drawer>
+      <fp-products-store products={{products}}></fp-products-store>
+      
+      <app-header-layout>
+          <app-header fixed>
+              <paper-icon-button icon="icons:menu"
+                                 active="{{drawerOpened}}"
+                                 hidden$="[[!drawerOpened]]"></paper-icon-button>
+              <a href="/" class="title">
+                <div main-title>FramApp</div>
+              </a>
+          </app-header>
+          <app-drawer-layout>
+              <app-drawer opened="{{!drawerOpened}}">
+                  <div class="app-drawer-wrapper">
+                    <h4>Categories</h4>
+                    <category-selector categories="[[categories]]"></category-selector>
+                  </div>
+              </app-drawer>
+              <iron-pages id="pages"
+                          role="main"
+                          selected="[[routeData.page]]"
+                          attr-for-selected="name">
+                          
+                  <fp-category-page name="categories"
+                                    products="[[products]]"
+                                    subroute="[[subroute]]"></fp-category-page>
+                  <fp-home-page name=""
+                                products=[[products]]></fp-home-page>
+              </iron-pages>
+          </app-drawer-layout>
+      </app-header-layout>
   </template>
 
   <script>
@@ -67,10 +100,7 @@
       is: 'framapp-polymer-app',
 
       properties: {
-        category: {
-            type: String,
-        },
-      },
+      }
     });
   </script>
 </dom-module>
