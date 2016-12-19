@@ -13,6 +13,7 @@
 <link rel="import" href="fp-products-store.html">
 <link rel="import" href="fp-home-page.html">
 <link rel="import" href="fp-category-page.html">
+<link rel="import" href="login-component.html">
 
 <dom-module id="framapp-polymer-app">
   <template>
@@ -70,6 +71,7 @@
               <a href="/" class="title">
                 <div main-title>FramApp</div>
               </a>
+              <p><login-component></login-component></p>
           </app-header>
           <app-drawer-layout>
               <app-drawer opened="{{!drawerOpened}}">
