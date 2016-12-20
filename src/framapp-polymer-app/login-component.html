@@ -13,9 +13,9 @@
 
       </style>
       <firebase-app
-        auth-domain="project-5613440220430148247.firebaseapp.com"
-        database-url="https://project-5613440220430148247.firebaseio.com"
-        api-key="AIzaSyBKP4cOP508h0JLKmjFvzJooO0MqV8l4fU">
+        auth-domain="[[authData.authDomain]]"
+        database-url="[[authData.databaseUrl]]"
+        api-key="[[authData.apiKey]]">
       </firebase-app>
       <firebase-auth id="auth" user="{{user}}" provider="google" on-error="handleError">
       </firebase-auth>
@@ -40,6 +40,7 @@
     <script>
         Polymer({
             is: 'login-component',
+            behaviors: [resourcesBehavior],
             listeners: {
               "iron-overlay-closed": 'handleModalClose'
             },

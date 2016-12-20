@@ -68,10 +68,12 @@
               <paper-icon-button icon="icons:menu"
                                  active="{{drawerOpened}}"
                                  hidden$="[[!drawerOpened]]"></paper-icon-button>
-              <a href="/" class="title">
-                <div main-title>FramApp</div>
-              </a>
-              <p><login-component></login-component></p>
+              <div>
+                <a href="/" class="title">
+                  <div main-title>FramApp</div>
+                </a>
+              </div>
+              <login-component></login-component>
           </app-header>
           <app-drawer-layout>
               <app-drawer opened="{{!drawerOpened}}">
