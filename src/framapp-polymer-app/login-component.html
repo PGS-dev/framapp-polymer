@@ -5,6 +5,7 @@
 <link rel="import" href="../../bower_components/paper-input/paper-input.html">
 <link rel="import" href="../../bower_components/iron-icon/iron-icon.html">
 <link rel="import" href="../../bower_components/iron-icons/communication-icons.html">
+<link rel="import" href="../../bower_components/paper-toast/paper-toast.html">
 
 <dom-module id="login-component">
     <template>
@@ -34,6 +35,7 @@
           </div>
         </div>
       </paper-dialog>
+      <paper-toast text="Login failed" id="toast"></paper-toast>
     </template>
     <script>
         Polymer({
@@ -45,13 +47,16 @@
             handleClick: function(){
               //framapp@pgs-soft.com
               //password
+              let self = this;
               this.$.auth.signInWithEmailAndPassword(this.$.userName.value, this.$.password.value)
                   .then(function(response) {
-                    debugger;// successful authentication response here
-                    })
+                    self.$.toast.textContent = "Logged in :)"
+                    self.$.toast.open();
+                  })
                   .catch(function(error) {
-                    debugger;// unsuccessful authentication response here
-                    });
+                    self.$.toast.textContent = error.message;
+                    self.$.toast.open();
+                  });
             },
             handleModalClose: function(event){
               this.$.password.value = "";
