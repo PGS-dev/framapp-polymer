@@ -17,16 +17,16 @@
         database-url="[[authData.databaseUrl]]"
         api-key="[[authData.apiKey]]">
       </firebase-app>
-      <firebase-auth id="auth" user="{{user}}" provider="google" on-error="handleError">
+      <firebase-auth id="auth" user="{{user}}" provider="google" on-error="handleError" signed-in="{{signedIn}}">
       </firebase-auth>
       <paper-button onclick="loginDialog.open()">Login</paper-button>
       <paper-dialog id="loginDialog">
         <h2>Insert login data</h2>
         <div>
-          <paper-input label="Username" id="userName">
+          <paper-input label="Username" id="userName" value="framapp@pgs-soft.com">
             <iron-icon icon="communication:email" prefix></iron-icon>
           </paper-input>
-          <paper-input label="Password" id="password" type="password">
+          <paper-input label="Password" id="password" type="password" value="password">
             <iron-icon icon="communication:vpn-key" prefix></iron-icon>
           </paper-input>
           <div class="buttons">
@@ -41,17 +41,24 @@
         Polymer({
             is: 'login-component',
             behaviors: [resourcesBehavior],
-            listeners: {
-              "iron-overlay-closed": 'handleModalClose'
+
+            properties:{
+              signedIn: {
+                observer: '_getToken'
+              },
+              authToken: {
+                readOnly: true,
+                notify: true
+              }
             },
-            properties:{},
+
             handleClick: function(){
               //framapp@pgs-soft.com
               //password
-              let self = this;
+              var self = this;
               this.$.auth.signInWithEmailAndPassword(this.$.userName.value, this.$.password.value)
                   .then(function(response) {
-                    self.$.toast.textContent = "Logged in :)"
+                    self.$.toast.textContent = "Logged in :)";
                     self.$.toast.open();
                   })
                   .catch(function(error) {
@@ -59,9 +66,16 @@
                     self.$.toast.open();
                   });
             },
-            handleModalClose: function(event){
-              this.$.password.value = "";
-              this.$.userName.value = "";
+
+            _getToken: function (signedIn) {
+              var self = this;
+              if(signedIn)
+              {
+                this.$.auth.user.getToken()
+                  .then(function(token) {
+                    self._setAuthToken(token);
+                });
+              }
             }
         });
     </script>
