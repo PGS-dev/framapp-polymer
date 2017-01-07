@@ -1,0 +1,60 @@
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+<link rel="import" href="../../bower_components/app-route/app-route.html">
+<link rel="import" href="../../bower_components/app-layout/app-grid/app-grid-style.html">
+
+<!--
+`fp-product-page`
+
+
+@demo ../demo/fp-product-page-demo.html 
+-->
+
+<dom-module id="fp-product-page">
+  <template>
+    <style include="app-grid-style">
+      :host {
+        display: block;
+        --app-grid-columns: 3;
+        --app-grid-gutter: 20px;
+        --app-grid-item-height: 100px;
+        --app-grid-expandible-item-columns: 2;
+      }
+
+      .desc {
+          @apply(--app-grid-expandible-item);
+      }
+    </style>
+    <app-route route="{{subroute}}"
+               pattern="/:id"
+               data="{{selected}}"></app-route>
+
+    <div class="app-grid">
+        <div class="desc">
+            <h2>[[product.title]]</h2>
+            <p>[[product.description]]</p>
+        </div>
+        <div class="item">
+            <img src="[[product.imageUrl]]"/>
+        </div>
+    </div>
+
+  </template>
+  <script>
+    Polymer({
+
+      is: 'fp-product-page',
+
+      properties: {
+          products: Object,
+          product:{
+              type: Object,
+              computed: '_getProduct(selected.id, products)'
+          }
+      },
+
+      _getProduct: function(id){
+          return this.products.find(x => x.id === id);
+      }
+    });
+  </script>
+</dom-module>

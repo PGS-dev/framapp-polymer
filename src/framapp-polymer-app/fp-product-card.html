@@ -38,11 +38,17 @@
         --iron-icon-height: 32px;
         --iron-icon-width: 32px;
       }
+
+      a{
+        color: black;
+      }
     </style>
-    <iron-icon class="big" icon="icons:star" hidden$="[[!product.promoted]]"></iron-icon>
-    <paper-card image="[[product.imageUrl]]" alt="image">
-      <div class="card-content">[[product.title]]</div>
-    </paper-card>
+    <a href="/product/[[product.id]]">
+      <iron-icon class="big" icon="icons:star" hidden$="[[!product.promoted]]"></iron-icon>
+      <paper-card image="[[product.imageUrl]]" alt="image">
+        <div class="card-content">[[product.title]]</div>
+      </paper-card>
+    </a>
   </template>
   <script>
     Polymer({
