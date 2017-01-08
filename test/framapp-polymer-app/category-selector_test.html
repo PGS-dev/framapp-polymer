@@ -4,22 +4,22 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, minimum-scale=1, initial-scale=1, user-scalable=yes">
 
-    <title>category-selector test</title>
+    <title>fp-category-selector test</title>
 
     <script src="../../../webcomponentsjs/webcomponents-lite.js"></script>
     <script src="../../../web-component-tester/browser.js"></script>
 
-    <link rel="import" href="../../src/framapp-polymer-app/category-selector.html">
+    <link rel="import" href="../../src/framapp-polymer-app/fp-category-selector.html">
   </head>
   <body>
-    <test-fixture id="category-selector-fixure">
+    <test-fixture id="fp-category-selector-fixure">
       <template>
-        <category-selector></category-selector>
+        <fp-category-selector></fp-category-selector>
       </template>
     </test-fixture>
 
     <script>
-      suite('category-selector', function() {
+      suite('fp-category-selector', function() {
           var selector;
           var categories =JSON.stringify(            
             {                
@@ -28,8 +28,8 @@
             });
 
             setup(function(){
-                selector = fixture('category-selector-fixure');
-                assert.equal(selector.is, 'category-selector');
+                selector = fixture('fp-category-selector-fixure');
+                assert.equal(selector.is, 'fp-category-selector');
                 selector.setAttribute('categories', categories);
                 Polymer.dom.flush();
             });
