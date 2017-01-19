@@ -13,7 +13,7 @@
 <link rel="import" href="fp-products-store.html">
 <link rel="import" href="fp-home-page.html">
 <link rel="import" href="fp-category-page.html">
-
+<link rel="import" href="fp-login-component.html">
 
 <dom-module id="framapp-polymer-app">
   <template>
@@ -68,9 +68,12 @@
               <paper-icon-button icon="icons:menu"
                                  active="{{drawerOpened}}"
                                  hidden$="[[!drawerOpened]]"></paper-icon-button>
-              <a href="/" class="title">
-                <div main-title>FramApp</div>
-              </a>
+              <div>
+                <a href="/" class="title">
+                  <div main-title>FramApp</div>
+                </a>
+              </div>
+              <fp-login-component></fp-login-component>
           </app-header>
           <app-drawer-layout>
               <app-drawer opened="{{!drawerOpened}}">
