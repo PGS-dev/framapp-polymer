@@ -47,7 +47,8 @@
 
             properties:{
               signedIn: {
-                observer: '_getToken'
+                observer: '_getToken',
+                notify: true
               },
               authToken: {
                 readOnly: true,

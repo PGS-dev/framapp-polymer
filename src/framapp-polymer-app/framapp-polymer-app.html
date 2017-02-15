@@ -11,6 +11,7 @@
 <link rel="import" href="fp-home-page.html">
 <link rel="import" href="fp-category-page.html">
 <link rel="import" href="fp-login-component.html">
+<link rel="import" href="fp-admin-menu.html">
 
 <dom-module id="framapp-polymer-app">
   <template>
@@ -40,6 +41,12 @@
               }
           }
 
+          :root {
+            --paper-item:{
+              color: black;
+              text-decoration: none;
+            }
+          }
       </style>
       <app-location route="{{route}}"></app-location>
       <app-route route="{{route}}"
@@ -58,13 +65,14 @@
               <div main-title>
                 <a href="/" class="title">FramApp</a>
               </div>
-              <fp-login-component></fp-login-component>
+              <fp-login-component signed-in="{{signedIn}}"></fp-login-component>
             </app-toolbar>
           </app-header>
           <app-drawer-layout>
               <app-drawer opened="{{!drawerOpened}}">
                   <div class="app-drawer-wrapper">
                     <fp-category-selector categories="[[categories]]"></fp-category-selector>
+                    <fp-admin-menu hidden$="[[!signedIn]]"></fp-admin-menu>
                   </div>
               </app-drawer>
               <iron-pages id="pages"
