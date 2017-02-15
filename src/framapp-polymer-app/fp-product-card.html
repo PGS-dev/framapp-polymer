@@ -43,12 +43,13 @@
         color: black;
       }
     </style>
-    <a href="/product/[[product.id]]">
+
       <iron-icon class="big" icon="icons:star" hidden$="[[!product.promoted]]"></iron-icon>
       <paper-card image="[[product.imageUrl]]" alt="image">
-        <div class="card-content">[[product.title]]</div>
+        <div class="card-content">
+          <a href="/product/[[product.id]]">[[product.title]]</a>
+        </div>
       </paper-card>
-    </a>
   </template>
   <script>
     Polymer({
