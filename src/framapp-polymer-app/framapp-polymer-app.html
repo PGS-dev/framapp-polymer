@@ -8,13 +8,13 @@
 <link rel="import" href="../../bower_components/paper-icon-button/paper-icon-button.html">
 <link rel="import" href="../../bower_components/iron-pages/iron-pages.html">
 
-<link rel="import" href="category-selector.html">
+<link rel="import" href="fp-category-selector.html">
 <link rel="import" href="fp-categories-store.html">
 <link rel="import" href="fp-products-store.html">
 <link rel="import" href="fp-home-page.html">
 <link rel="import" href="fp-category-page.html">
 <link rel="import" href="fp-product-page.html">
-
+<link rel="import" href="fp-login-component.html">
 
 <dom-module id="framapp-polymer-app">
   <template>
@@ -69,15 +69,17 @@
               <paper-icon-button icon="icons:menu"
                                  active="{{drawerOpened}}"
                                  hidden$="[[!drawerOpened]]"></paper-icon-button>
-              <a href="/" class="title">
-                <div main-title>FramApp</div>
-              </a>
+              <div>
+                <a href="/" class="title">
+                  <div main-title>FramApp</div>
+                </a>
+              </div>
+              <fp-login-component></fp-login-component>
           </app-header>
           <app-drawer-layout>
               <app-drawer opened="{{!drawerOpened}}">
                   <div class="app-drawer-wrapper">
-                    <h4>Categories</h4>
-                    <category-selector categories="[[categories]]"></category-selector>
+                    <fp-category-selector categories="[[categories]]"></fp-category-selector>
                   </div>
               </app-drawer>
               <iron-pages id="pages"

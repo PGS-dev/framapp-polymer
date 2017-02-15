@@ -1,15 +1,16 @@
 ﻿<link rel="import" href="../../bower_components/polymer/polymer.html">
 <link rel="import" href="../../bower_components/iron-selector/iron-selector.html">
 <link rel="import" href="../../bower_components/paper-item/paper-item.html">
+<link rel="import" href="../../bower_components/paper-collapse-item/paper-collapse-item.html">
 
 <!--
-`category-selector`
+`fp-category-selector`
 
 
-@demo ../demo/category-selector-demo.html 
+@demo ../demo/fp-category-selector-demo.html
 -->
 
-<dom-module id="category-selector">
+<dom-module id="fp-category-selector">
     <template>
         <style>
             :host {
@@ -27,18 +28,20 @@
                 }
             }
         </style>
-        <iron-selector selected="{{category}}" attr-for-selected="name">
-            <template is="dom-repeat" items="[[categories]]" as="category">
-                <a href="/categories/[[category.id]]" tabIndex="-1" name="[[category.id]]">
-                    <paper-item>[[category.title]]</paper-item>
-                </a>
-            </template>
-        </iron-selector>
+        <paper-collapse-item header="Categories" icon="icons:apps" opened="true">
+            <iron-selector selected="{{category}}" attr-for-selected="name">
+                <template is="dom-repeat" items="[[categories]]" as="category">
+                    <a href="/categories/[[category.id]]" tabIndex="-1" name="[[category.id]]">
+                        <paper-item>[[category.title]]</paper-item>
+                    </a>
+                </template>
+            </iron-selector>
+        </paper-collapse-item>
     </template>
     <script>
         Polymer({
             
-            is: 'category-selector',
+            is: 'fp-category-selector',
 
             properties: {
                 categories: Array,
