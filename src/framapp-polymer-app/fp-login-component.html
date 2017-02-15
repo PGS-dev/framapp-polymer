@@ -10,7 +10,9 @@
 <dom-module id="fp-login-component">
     <template>
       <style>
-
+        .no-padding{
+          padding: 0;
+        }
       </style>
       <firebase-app
         auth-domain="[[authData.authDomain]]"
@@ -19,7 +21,8 @@
       </firebase-app>
       <firebase-auth id="auth" user="{{user}}" provider="google" on-error="handleError" signed-in="{{signedIn}}">
       </firebase-auth>
-      <paper-button onclick="loginDialog.open()">Login</paper-button>
+      <paper-button class="no-padding" on-click="loginDialogOpen" hidden$="{{signedIn}}">Login</paper-button>
+      <paper-button class="no-padding" on-click="logout" hidden$="{{!signedIn}}">Logout</paper-button>
       <paper-dialog id="loginDialog">
         <h2>Insert login data</h2>
         <div>
@@ -51,6 +54,14 @@
                 readOnly: true,
                 notify: true
               }
+            },
+
+            loginDialogOpen: function(){
+              this.$.loginDialog.open();
+            },
+
+            logout: function(){
+              this.$.auth.signOut();
             },
 
             handleClick: function(){

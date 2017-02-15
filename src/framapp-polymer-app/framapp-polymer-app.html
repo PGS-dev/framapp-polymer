@@ -1,8 +1,5 @@
 <link rel="import" href="../../bower_components/polymer/polymer.html">
-<link rel="import" href="../../bower_components/app-layout/app-drawer-layout/app-drawer-layout.html">
-<link rel="import" href="../../bower_components/app-layout/app-drawer/app-drawer.html">
-<link rel="import" href="../../bower_components/app-layout/app-header-layout/app-header-layout.html">
-<link rel="import" href="../../bower_components/app-layout/app-header/app-header.html">
+<link rel="import" href="../../bower_components/app-layout/app-layout.html">
 <link rel="import" href="../../bower_components/app-route/app-location.html">
 <link rel="import" href="../../bower_components/app-route/app-route.html">
 <link rel="import" href="../../bower_components/paper-icon-button/paper-icon-button.html">
@@ -24,35 +21,24 @@
           }
 
           app-header {
-              @apply(--layout-fixed-top);
-              z-index: 1;
-              height: 64px;
-              line-height: 64px;
               background-color: #ebebeb;
               -webkit-backdrop-filter: saturate(180%) blur(20px);
           }
 
           .title {
-               text-decoration: none;
+              text-decoration: none;
               color: black;
-              position: absolute;
-              left: 40px;
+              pointer-events: auto !important;
           }
 
           app-drawer {
               white-space: nowrap;
               margin-top: 64px;
-              z-index: 2;
               --app-drawer-width: 200px;
               --app-drawer-scrim-background: rgba(235, 235, 235, 0.5);
               --app-drawer-content-container: {
                 background-color: #dbd9d9;
               }
-          }
-
-          .app-drawer-wrapper {
-              height: 100%;
-              overflow-y: auto;
           }
 
           :root {
@@ -61,7 +47,6 @@
               text-decoration: none;
             }
           }
-
       </style>
       <app-location route="{{route}}"></app-location>
       <app-route route="{{route}}"
@@ -73,15 +58,15 @@
       
       <app-header-layout>
           <app-header fixed>
+            <app-toolbar>
               <paper-icon-button icon="icons:menu"
                                  active="{{drawerOpened}}"
                                  hidden$="[[!drawerOpened]]"></paper-icon-button>
-              <div>
-                <a href="/" class="title">
-                  <div main-title>FramApp</div>
-                </a>
+              <div main-title>
+                <a href="/" class="title">FramApp</a>
               </div>
               <fp-login-component signed-in="{{signedIn}}"></fp-login-component>
+            </app-toolbar>
           </app-header>
           <app-drawer-layout>
               <app-drawer opened="{{!drawerOpened}}">

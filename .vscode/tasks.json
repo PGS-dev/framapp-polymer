@@ -1,0 +1,13 @@
+{
+    "version": "0.1.0",
+    "_runner": "terminal",
+    "tasks": [
+        {
+            "taskName": "polymer serve",
+            "command": "polymer serve",
+            "isShellCommand": true,
+            "isBackground": true,
+            "isBuildCommand": true
+        }
+    ]
+}
