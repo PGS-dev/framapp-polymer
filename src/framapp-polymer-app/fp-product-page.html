@@ -1,6 +1,8 @@
 <link rel="import" href="../../bower_components/polymer/polymer.html">
 <link rel="import" href="../../bower_components/app-route/app-route.html">
+<link rel="import" href="../../bower_components/iron-ajax/iron-ajax.html">
 <link rel="import" href="../../bower_components/app-layout/app-grid/app-grid-style.html">
+<link rel="import" href="resources-behavior.html">
 
 <!--
 `fp-product-page`
@@ -27,7 +29,11 @@
     <app-route route="{{subroute}}"
                pattern="/:id"
                data="{{selected}}"></app-route>
-
+    <iron-ajax auto
+               url="[[requestUrl]]"
+               handle-as="json"
+               last-response="{{product}}"></iron-ajax>
+               
     <div class="app-grid">
         <div class="desc">
             <h2>[[product.title]]</h2>
@@ -43,17 +49,17 @@
     Polymer({
 
       is: 'fp-product-page',
-
+      behaviors: [resourcesBehavior],
       properties: {
-          products: Object,
-          product:{
-              type: Object,
-              computed: '_getProduct(selected.id, products)'
-          }
+          product: Object,
+          requestUrl: {
+              type: String,
+              computed: '_getProduct(selected.id)'
+          },
       },
 
       _getProduct: function(id){
-          return this.products.find(x => x.id === id);
+          return this.apiUrls.getProduct(id);
       }
     });
   </script>
