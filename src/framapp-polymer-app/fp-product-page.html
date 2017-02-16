@@ -1,0 +1,66 @@
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+<link rel="import" href="../../bower_components/app-route/app-route.html">
+<link rel="import" href="../../bower_components/iron-ajax/iron-ajax.html">
+<link rel="import" href="../../bower_components/app-layout/app-grid/app-grid-style.html">
+<link rel="import" href="resources-behavior.html">
+
+<!--
+`fp-product-page`
+
+
+@demo ../demo/fp-product-page-demo.html 
+-->
+
+<dom-module id="fp-product-page">
+  <template>
+    <style include="app-grid-style">
+      :host {
+        display: block;
+        --app-grid-columns: 3;
+        --app-grid-gutter: 20px;
+        --app-grid-item-height: 100px;
+        --app-grid-expandible-item-columns: 2;
+      }
+
+      .desc {
+          @apply(--app-grid-expandible-item);
+      }
+    </style>
+    <app-route route="{{subroute}}"
+               pattern="/:id"
+               data="{{selected}}"></app-route>
+    <iron-ajax auto
+               url="[[requestUrl]]"
+               handle-as="json"
+               last-response="{{product}}"></iron-ajax>
+               
+    <div class="app-grid">
+        <div class="desc">
+            <h2>[[product.title]]</h2>
+            <p>[[product.description]]</p>
+        </div>
+        <div class="item">
+            <img src="[[product.imageUrl]]"/>
+        </div>
+    </div>
+
+  </template>
+  <script>
+    Polymer({
+
+      is: 'fp-product-page',
+      behaviors: [resourcesBehavior],
+      properties: {
+          product: Object,
+          requestUrl: {
+              type: String,
+              computed: '_getProduct(selected.id)'
+          },
+      },
+
+      _getProduct: function(id){
+          return this.apiUrls.getProduct(id);
+      }
+    });
+  </script>
+</dom-module>
