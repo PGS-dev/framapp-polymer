@@ -1,0 +1,32 @@
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+<link rel="import" href="../../bower_components/app-route/app-route.html">
+<link rel="import" href="../../bower_components/iron-pages/iron-pages.html">
+
+<link rel="import" href="fp-categories-table.html">
+
+
+<dom-module id="fp-admin-page">
+  <template>
+    <template is="dom-if" if="{{signedIn}}"  restamp="true">
+      <app-route route="{{subroute}}"
+             pattern="/:page"
+             data="{{routeData}}"></app-route>
+
+      <iron-pages id="adminPages"
+                  role="main"
+                  selected="[[routeData.page]]"
+                  attr-for-selected="name">
+
+        <fp-categories-table name="categories"
+                             categories="[[categories]]"
+                             subroute="[[subroute]]"></fp-category-page>
+      </iron-pages>
+    </template>
+ </template>
+ 
+ <script>
+  Polymer({
+    is: 'fp-admin-page'
+  });
+  </script>
+</dom-module>
