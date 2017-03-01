@@ -20,15 +20,9 @@
             a {
                 text-decoration: none;
             }
-            paper-item {
-                text-decoration: none;
-                --paper-item:{
-                    color: black;
-                    text-decoration: none;
-                }
-            }
+
         </style>
-        <paper-collapse-item header="Categories" icon="icons:apps" opened="true">
+        <paper-collapse-item header="Categories" icon="icons:apps" opened>
             <iron-selector selected="{{category}}" attr-for-selected="name">
                 <template is="dom-repeat" items="[[categories]]" as="category">
                     <a href="/categories/[[category.id]]" tabIndex="-1" name="[[category.id]]">

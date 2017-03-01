@@ -1,0 +1,26 @@
+<link rel="import" href="../../bower_components/paper-collapse-item/paper-collapse-item.html">
+
+<dom-module id="fp-admin-menu">
+  <template>
+    <style>
+      a {
+        text-decoration: none;
+      }
+    </style>
+
+    <paper-collapse-item header="Admin" icon="icons:settings" opened>
+      <a href="/admin/products">
+        <paper-item>Products</paper-item>
+      </a>
+      <a href="/admin/categories">
+        <paper-item>Categories</paper-item>
+      </a>
+    </paper-collapse-item>
+  </template>
+</dom-module>
+
+<script>
+  Polymer({
+    is: 'fp-admin-menu'
+  });
+</script>
