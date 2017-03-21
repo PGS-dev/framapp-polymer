@@ -3,7 +3,7 @@
 <link rel="import" href="../../bower_components/iron-pages/iron-pages.html">
 
 <link rel="import" href="fp-categories-table.html">
-
+<link rel="import" href="fp-products-table.html">
 
 <dom-module id="fp-admin-page">
   <template>
@@ -16,10 +16,14 @@
                   role="main"
                   selected="[[routeData.page]]"
                   attr-for-selected="name">
-
+        
         <fp-categories-table name="categories"
                              categories="[[categories]]"
                              subroute="[[subroute]]"></fp-category-page>
+        
+        <fp-products-table name="products"
+                           products="[[products]]"
+                           subroute="[[subroute]]"></fp-products-table>
       </iron-pages>
     </template>
  </template>
