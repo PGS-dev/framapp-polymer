@@ -1,0 +1,57 @@
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+<link rel="import" href="../../bower_components/app-route/app-location.html">
+<link rel="import" href="../../bower_components/paper-material/paper-material.html">
+<link rel="import" href="../../bower_components/paper-datatable/paper-datatable.html">
+
+<dom-module id="fp-products-table">
+  <template>
+    <style>
+      :host {
+        display: block;
+        padding: 25px;
+        text-decoration: none;
+
+        --paper-datatable-column-header: {
+          background-color: rgb(102, 102, 102);
+          color: white;
+        }
+      }
+    </style>
+      <app-location path="{{path}}"></app-location>
+      <paper-material elevation="5">
+        <paper-datatable data="{{products}}" >
+          <paper-datatable-column header="Id">
+            <template>
+                 {{_getIndex(item)}}
+            </template>
+          </paper-datatable-column>  
+          <paper-datatable-column header="Title" property="title" sortable>
+          </paper-datatable-column>  
+          <paper-datatable-column header="Action" property="id" >
+              <template>
+                 <paper-button >Edit</paper-button>
+              </template>
+          </paper-datatable-column>   
+        </paper-datatable>
+      </paper-material>
+ </template>
+ 
+ <script>
+  Polymer({
+   is: 'fp-products-table',
+    properties: {
+    },
+    listeners: {
+        'cell-tap': '_gotoCategory',
+    },
+
+    _getIndex: function(item){
+      return this.categories.indexOf(item) + 1;
+    },
+
+    _gotoCategory: function(event, column){
+      this.path = "/admin/category/" + column.item.id;
+    }
+  });
+  </script>
+</dom-module>
