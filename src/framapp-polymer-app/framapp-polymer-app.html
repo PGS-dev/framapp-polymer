@@ -4,6 +4,7 @@
 <link rel="import" href="../../bower_components/app-route/app-route.html">
 <link rel="import" href="../../bower_components/paper-icon-button/paper-icon-button.html">
 <link rel="import" href="../../bower_components/iron-pages/iron-pages.html">
+<link rel="import" href="../../bower_components/paper-button/paper-button.html">
 
 <link rel="import" href="fp-category-selector.html">
 <link rel="import" href="fp-categories-store.html">
@@ -13,6 +14,7 @@
 <link rel="import" href="fp-product-page.html">
 <link rel="import" href="fp-login-component.html">
 <link rel="import" href="fp-admin-menu.html">
+<link rel="import" href="fp-admin-page.html">
 
 <dom-module id="framapp-polymer-app">
   <template>
@@ -64,7 +66,7 @@
                                  active="{{drawerOpened}}"
                                  hidden$="[[!drawerOpened]]"></paper-icon-button>
               <div main-title>
-                <a href="/" class="title">FramApp</a>
+                <a href="/" class="title"><paper-button>FramApp</paper-button></a>
               </div>
               <fp-login-component signed-in="{{signedIn}}"></fp-login-component>
             </app-toolbar>
@@ -88,6 +90,10 @@
                                 products=[[products]]></fp-home-page>
                   <fp-product-page name="product"
                                    subroute="[[subroute]]"></fp-product-page>
+                  <fp-admin-page name="admin"
+                                          categories="[[categories]]"
+                                          signed-in="[[signedIn]]"
+                                          subroute="[[subroute]]"></fp-admin-category-page>
               </iron-pages>
           </app-drawer-layout>
       </app-header-layout>
