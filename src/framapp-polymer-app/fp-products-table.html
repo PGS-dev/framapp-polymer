@@ -46,11 +46,11 @@
     },
 
     _getIndex: function(item){
-      return this.categories.indexOf(item) + 1;
+      return this.products.indexOf(item) + 1;
     },
 
     _gotoCategory: function(event, column){
-      this.path = "/admin/category/" + column.item.id;
+      this.path = "/admin/products/" + column.item.id;
     }
   });
   </script>
