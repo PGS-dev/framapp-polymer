@@ -1,22 +1,28 @@
 <script>
-    resourcesBehavior = {
-      properties: {
-        apiUrls: {
-            type: Object,
-            value: {
-                    getCategories: "https://project-5613440220430148247.firebaseio.com/api/v1/categories.json",
-                    getProducts: "https://project-5613440220430148247.firebaseio.com/api/v1/products.json",
-                    getProduct: function(id){ return "https://project-5613440220430148247.firebaseio.com/api/v1/products/"+id+".json";},
-                }
-        },
-        authData: {
-          type: Object,
-          value: {
-            authDomain: "project-5613440220430148247.firebaseapp.com",
-            databaseUrl: "https://project-5613440220430148247.firebaseio.com",
-            apiKey: "AIzaSyBKP4cOP508h0JLKmjFvzJooO0MqV8l4fU"
-          }
+  /**
+  * resourcesBehavior
+  *
+  * @polymerBehavior
+  */
+  resourcesBehavior = {
+    properties: {
+      apiUrls: {
+        type: Object,
+        value: {
+          getCategories: "https://project-5613440220430148247.firebaseio.com/api/v1/categories.json",
+          getProducts: "https://project-5613440220430148247.firebaseio.com/api/v1/products.json",
+          getProduct: function (id) { return "https://project-5613440220430148247.firebaseio.com/api/v1/products/" + id + ".json"; },
+        }
+      },
+      authData: {
+        type: Object,
+        value: {
+          authDomain: "project-5613440220430148247.firebaseapp.com",
+          databaseUrl: "https://project-5613440220430148247.firebaseio.com",
+          apiKey: "AIzaSyBKP4cOP508h0JLKmjFvzJooO0MqV8l4fU"
         }
       }
-    };
+    }
+  };
+
 </script>
