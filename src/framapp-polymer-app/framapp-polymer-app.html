@@ -14,7 +14,8 @@
 <link rel="import" href="fp-product-page.html">
 <link rel="import" href="fp-login-component.html">
 <link rel="import" href="fp-admin-menu.html">
-<link rel="import" href="fp-admin-page.html">
+<link rel="import" href="fp-admin-categories-table.html">
+<link rel="import" href="fp-admin-products-table.html">
 
 <dom-module id="framapp-polymer-app">
   <template>
@@ -90,11 +91,20 @@
                                 products=[[products]]></fp-home-page>
                   <fp-product-page name="product"
                                    subroute="[[subroute]]"></fp-product-page>
-                  <fp-admin-page name="admin"
-                                          categories="[[categories]]"
-                                          products="[[products]]"
-                                          signed-in="[[signedIn]]"
-                                          subroute="[[subroute]]"></fp-admin-page>
+
+                  <template is="dom-if" if="[[signedIn]]" restamp>
+                    <app-route route="{{subroute}}"
+                               pattern="/:page"
+                               data="{{adminRoute}}"></app-route>
+                    <iron-pages name="admin"
+                                selected="[[adminRoute.page]]"
+                                attr-for-selected="name">
+                      <fp-admin-categories-table name="categories"
+                                                categories="[[categories]]"></fp-admin-categories-table>
+                      <fp-admin-products-table name="products"
+                                                products="[[products]]"></fp-admin-products-table>
+                    </iron-pages>
+                  </template>
               </iron-pages>
           </app-drawer-layout>
       </app-header-layout>

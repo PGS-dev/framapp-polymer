@@ -3,7 +3,7 @@
 <link rel="import" href="../../bower_components/paper-material/paper-material.html">
 <link rel="import" href="../../bower_components/paper-datatable/paper-datatable.html">
 
-<dom-module id="fp-products-table">
+<dom-module id="fp-admin-categories-table">
   <template>
     <style>
       :host {
@@ -19,7 +19,7 @@
     </style>
       <app-location path="{{path}}"></app-location>
       <paper-material elevation="5">
-        <paper-datatable data="{{products}}" >
+        <paper-datatable data="{{categories}}" >
           <paper-datatable-column header="Id">
             <template>
                  {{_getIndex(item)}}
@@ -38,7 +38,7 @@
  
  <script>
   Polymer({
-   is: 'fp-products-table',
+   is: 'fp-admin-categories-table',
     properties: {
     },
     listeners: {
@@ -46,11 +46,11 @@
     },
 
     _getIndex: function(item){
-      return this.products.indexOf(item) + 1;
+      return this.categories.indexOf(item) + 1;
     },
 
     _gotoCategory: function(event, column){
-      this.path = "/admin/products/" + column.item.id;
+      this.path = "/admin/category/" + column.item.id;
     }
   });
   </script>
