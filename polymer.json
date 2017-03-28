@@ -1,16 +1,19 @@
 {
   "entrypoint": "index.html",
   "shell": "src/framapp-polymer-app/framapp-polymer-app.html",
-  "fragments": [
-  ],
-  "sourceGlobs": [
+  "source": [
    "src/**/*",
-   "bower.json",
-   "app.yaml"
+   "bower.json"
   ],
-  "includeDependencies": [
+  "extraDependencies": [
     "manifest.json",
     "images/*",
     "bower_components/webcomponentsjs/webcomponents-lite.js"
-  ]
+  ],
+  "builds": [{
+    "bundle": true,
+    "js": {"minify": true},
+    "css": {"minify": true},
+    "html": {"minify": true}
+  }]
 }

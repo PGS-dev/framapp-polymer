@@ -1,10 +1,16 @@
 <script>
-    toarrayBehavior = {
-        _toArray: function(obj){
-            return Object.keys(obj).map(function(key){
-                obj[key].id = key;
-                return obj[key];
-            })
-        }
-    };
+  /**
+  * toarray Behavior
+  *
+  * @polymerBehavior
+  */
+  toarrayBehavior = {
+    _toArray: function (obj) {
+      return Object.keys(obj).map(function (key) {
+        obj[key].id = key;
+        return obj[key];
+      })
+    }
+  };
+
 </script>
