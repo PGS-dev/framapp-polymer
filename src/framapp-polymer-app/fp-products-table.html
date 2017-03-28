@@ -29,7 +29,7 @@
           </paper-datatable-column>  
           <paper-datatable-column header="Action" property="id" >
               <template>
-                 <paper-button >Edit</paper-button>
+                 <paper-button on-tap="_gotoProduct" data-product-url$="/admin/products/[[item.id]]" >Edit</paper-button>
               </template>
           </paper-datatable-column>   
         </paper-datatable>
@@ -41,16 +41,13 @@
    is: 'fp-products-table',
     properties: {
     },
-    listeners: {
-        'cell-tap': '_gotoCategory',
-    },
 
     _getIndex: function(item){
       return this.products.indexOf(item) + 1;
     },
 
-    _gotoCategory: function(event, column){
-      this.path = "/admin/products/" + column.item.id;
+    _gotoProduct: function(event){
+      this.path = event.target.getAttribute('data-product-url');
     }
   });
   </script>
