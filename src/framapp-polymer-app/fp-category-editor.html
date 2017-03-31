@@ -1,0 +1,83 @@
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+<link rel="import" href="../../bower_components/app-route/app-route.html">
+<link rel="import" href="../../bower_components/iron-ajax/iron-ajax.html">
+<link rel="import" href="../../bower_components/iron-form/iron-form.html">
+<link rel="import" href="../../bower_components/paper-card/paper-card.html">
+<link rel="import" href="../../bower_components/paper-input/paper-input.html">
+<link rel="import" href="../../bower_components/paper-button/paper-button.html">
+
+<link rel="import" href="resources-behavior.html">
+
+<!--
+`fp-category-editor`
+
+
+@demo ../demo/fp-category-editor-demo.html 
+-->
+
+<dom-module id="fp-category-editor">
+  <template>
+    <style>
+      :host {
+        display: block;
+        padding: 25px;
+      }
+      
+    </style>
+    <app-route route="{{route}}"
+               pattern="/:id"
+               data="{{selected}}"></app-route>
+    <iron-ajax auto
+               url="[[requestUrl]]"
+               handle-as="json"
+               last-response="{{category}}"></iron-ajax>
+
+    <paper-card>
+      <div class="card-content">
+        <form is="iron-form" 
+              id="form" 
+              method="POST"
+              content-type="application/json"
+              action="[[requestUrl]]?auth=[[authToken]]">
+        <paper-input id="title"
+                     name="title"
+                     label="Name" 
+                     value="[[category.title]]"></paper-input>
+        <paper-input id="description"
+                     name="description" 
+                     label="Description" 
+                     value="{{category.description}}"></paper-input>
+        <paper-button raised 
+                      on-click="_submit">Submit</paper-button>
+        </form>
+      </div>
+    </paper-card>
+  </template>
+  <script>
+    Polymer({
+
+      is: 'fp-category-editor',
+      behaviors: [resourcesBehavior],
+      properties: {
+          requestUrl: {
+              type: String,
+              computed: '_getCategory(selected.id)'
+          }
+      },
+
+      _getCategory: function(id){
+          return this.apiUrls.getCategory(id);
+      },
+
+      _submit: function(event) {
+        this.$.form.submit();
+      },
+
+      ready: function() {
+        this.$.form.addEventListener('iron-form-presubmit', function() {
+          this.request.method = 'PUT';
+        });      
+      }
+    });
+  </script>
+</dom-module>
