@@ -68,8 +68,7 @@
               <div main-title>
                 <a href="/" class="title"><paper-button>FramApp</paper-button></a>
               </div>
-              <fp-login-component signed-in="{{signedIn}}" 
-                                  auth-token="{{authToken}}"></fp-login-component>
+              <fp-login-component signed-in="{{signedIn}}"></fp-login-component>
             </app-toolbar>
           </app-header>
           <app-drawer-layout>
@@ -95,7 +94,6 @@
                                  categories="[[categories]]"
                                  products="[[products]]"
                                  signed-in="[[signedIn]]"
-                                 auth-token="[[authToken]]"
                                  route="[[subroute]]"></fp-admin-page>
               </iron-pages>
           </app-drawer-layout>

@@ -1,6 +1,6 @@
 <link rel="import" href="../../bower_components/polymer/polymer.html">
 <link rel="import" href="../../bower_components/app-route/app-route.html">
-<link rel="import" href="../../bower_components/iron-ajax/iron-ajax.html">
+<link rel="import" href="../../bower_components/auth-ajax/auth-ajax.html">
 <link rel="import" href="../../bower_components/iron-form/iron-form.html">
 <link rel="import" href="../../bower_components/paper-card/paper-card.html">
 <link rel="import" href="../../bower_components/paper-input/paper-input.html">
@@ -57,7 +57,7 @@
     Polymer({
 
       is: 'fp-category-editor',
-      behaviors: [resourcesBehavior],
+      behaviors: [resourcesBehavior, Polymer.AuthTokenStoreBehavior],
       properties: {
           requestUrl: {
               type: String,
@@ -76,7 +76,11 @@
       ready: function() {
         this.$.form.addEventListener('iron-form-presubmit', function() {
           this.request.method = 'PUT';
-        });      
+        });
+
+        this.getAuthToken().then(function(token) {
+          this.authToken = token;
+        }.bind(this));
       }
     });
   </script>
