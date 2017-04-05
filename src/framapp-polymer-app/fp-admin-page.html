@@ -4,13 +4,15 @@
 
 <link rel="import" href="fp-categories-table.html">
 <link rel="import" href="fp-products-table.html">
+<link rel="import" href="fp-category-editor.html">
 
 <dom-module id="fp-admin-page">
   <template>
     <template is="dom-if" if="{{signedIn}}"  restamp="true">
-      <app-route route="{{subroute}}"
+      <app-route route="{{route}}"
              pattern="/:page"
-             data="{{routeData}}"></app-route>
+             data="{{routeData}}"
+             tail="{{subroute}}"></app-route>
 
       <iron-pages id="adminPages"
                   role="main"
@@ -18,12 +20,13 @@
                   attr-for-selected="name">
 
         <fp-categories-table name="categories"
-                             categories="[[categories]]"
-                             subroute="[[subroute]]"></fp-categories-table>
+                             categories="[[categories]]"></fp-categories-table>
         
         <fp-products-table name="products"
                            products="[[products]]"
                            subroute="[[subroute]]"></fp-products-table>
+        <fp-category-editor name="category"
+                            route="[[subroute]]"></fp-category-editor>
       </iron-pages>
     </template>
  </template>
