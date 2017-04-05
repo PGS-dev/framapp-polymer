@@ -1,32 +1,28 @@
 <link rel="import" href="../../bower_components/iron-ajax/iron-ajax.html">
-<link rel="import" href="toarray-behavior.html">
-<link rel="import" href="resources-behavior.html">
+<link rel="import" href="../behaviors/toarray-behavior.html">
+<link rel="import" href="../behaviors/resources-behavior.html">
 
-<dom-module id="fp-products-store">
+<dom-module id="fp-categories-store">
     <template>
         <iron-ajax auto
-            url="[[apiUrls.getProducts]]"
+            url="[[apiUrls.getCategories]]"
             handle-as="json"
             last-response="{{response}}"></iron-ajax>
     </template>
     <script>
         Polymer({
 
-            is: 'fp-products-store',
+            is: 'fp-categories-store',
             behaviors: [toarrayBehavior, resourcesBehavior],
             properties: {
                 response: Object,
-                category: {
-                    type: String,
-                    notify: true,
-                    value: ''
-                },
-                products: {
+                categories: {
                     type: Array,
                     notify: true,
                     computed: '_toArray(response)',
                 },
             },
+            
         });
     </script>
 </dom-module>
