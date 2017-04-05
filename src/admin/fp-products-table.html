@@ -2,6 +2,7 @@
 <link rel="import" href="../../bower_components/app-route/app-location.html">
 <link rel="import" href="../../bower_components/paper-material/paper-material.html">
 <link rel="import" href="../../bower_components/paper-datatable/paper-datatable.html">
+<link rel="import" href="../stores/fp-products-store.html">
 
 <dom-module id="fp-products-table">
   <template>
@@ -18,6 +19,7 @@
       }
     </style>
       <app-location path="{{path}}"></app-location>
+      <fp-products-store products="{{products}}"></fp-products-store>
       <paper-material elevation="5">
         <paper-datatable data="{{products}}" >
           <paper-datatable-column header="Id">
