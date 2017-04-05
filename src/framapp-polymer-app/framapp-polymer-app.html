@@ -56,7 +56,6 @@
                  pattern="/:page"
                  data="{{routeData}}"
                  tail="{{subroute}}"></app-route>
-      <fp-categories-store categories={{categories}}></fp-categories-store>
       <fp-products-store products={{products}}></fp-products-store>
       
       <app-header-layout>
@@ -74,7 +73,7 @@
           <app-drawer-layout>
               <app-drawer opened="{{!drawerOpened}}">
                   <div class="app-drawer-wrapper">
-                    <fp-category-selector categories="[[categories]]"></fp-category-selector>
+                    <fp-category-selector></fp-category-selector>
                     <fp-admin-menu hidden$="[[!signedIn]]"></fp-admin-menu>
                   </div>
               </app-drawer>
@@ -91,7 +90,6 @@
                   <fp-product-page name="product"
                                    route="[[subroute]]"></fp-product-page>
                   <fp-admin-page name="admin"
-                                 categories="[[categories]]"
                                  products="[[products]]"
                                  signed-in="[[signedIn]]"
                                  route="[[subroute]]"></fp-admin-page>

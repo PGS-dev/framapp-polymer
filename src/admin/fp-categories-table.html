@@ -3,6 +3,8 @@
 <link rel="import" href="../../bower_components/paper-material/paper-material.html">
 <link rel="import" href="../../bower_components/paper-datatable/paper-datatable.html">
 
+<link rel="import" href="../stores/fp-categories-store.html">
+
 <dom-module id="fp-categories-table">
   <template>
     <style>
@@ -18,6 +20,8 @@
       }
     </style>
       <app-location path="{{path}}"></app-location>
+      <fp-categories-store categories="{{categories}}"></fp-categories-store>
+
       <paper-material elevation="5">
         <paper-datatable data="{{categories}}" >
           <paper-datatable-column header="Id">

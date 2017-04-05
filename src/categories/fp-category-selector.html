@@ -2,6 +2,7 @@
 <link rel="import" href="../../bower_components/iron-selector/iron-selector.html">
 <link rel="import" href="../../bower_components/paper-item/paper-item.html">
 <link rel="import" href="../../bower_components/paper-collapse-item/paper-collapse-item.html">
+<link rel="import" href="../stores/fp-categories-store.html">
 
 <!--
 `fp-category-selector`
@@ -22,6 +23,8 @@
             }
 
         </style>
+        <fp-categories-store categories="{{categories}}"></fp-categories-store>
+
         <paper-collapse-item header="Categories" icon="icons:apps" opened>
             <iron-selector selected="{{category}}" attr-for-selected="name">
                 <template is="dom-repeat" items="[[categories]]" as="category">
@@ -38,7 +41,6 @@
             is: 'fp-category-selector',
 
             properties: {
-                categories: Array,
                 category: {
                     type: String,
                     notify: true
