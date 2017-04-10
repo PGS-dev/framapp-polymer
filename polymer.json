@@ -2,11 +2,21 @@
   "entrypoint": "index.html",
   "shell": "src/framapp-polymer-app/framapp-polymer-app.html",
   "fragments": [
+    "src/admin/fp-admin-menu.html",
+    "src/admin/fp-admin-page.html",
+    "src/fp-home-page.html",
+    "src/categories/fp-category-page.html",
+    "src/products/fp-product-page.html",
+    "src/categories/fp-category-selector.html",
+    "src/fp-login-component.html",
+    "bower_components/paper-button/paper-button.html",
+    "bower_components/paper-icon-button/paper-icon-button.html",
+    "bower_components/app-route/app-location.html",
+    "bower_components/app-route/app-route.html"
   ],
   "sourceGlobs": [
    "src/**/*",
-   "bower.json",
-   "app.yaml"
+   "bower.json"
   ],
   "includeDependencies": [
     "manifest.json",

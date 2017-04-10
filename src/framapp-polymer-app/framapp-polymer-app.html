@@ -1,20 +1,22 @@
 <link rel="import" href="../../bower_components/polymer/polymer.html">
 <link rel="import" href="../../bower_components/app-layout/app-layout.html">
-<link rel="import" href="../../bower_components/app-route/app-location.html">
-<link rel="import" href="../../bower_components/app-route/app-route.html">
-<link rel="import" href="../../bower_components/paper-icon-button/paper-icon-button.html">
+<link rel="import" href="../../bower_components/lazy-imports/lazy-imports.html">
 <link rel="import" href="../../bower_components/iron-pages/iron-pages.html">
-<link rel="import" href="../../bower_components/paper-button/paper-button.html">
-
-<link rel="import" href="../categories/fp-category-selector.html">
-<link rel="import" href="../fp-home-page.html">
-<link rel="import" href="../categories/fp-category-page.html">
-<link rel="import" href="../products/fp-product-page.html">
-<link rel="import" href="../fp-login-component.html">
-<link rel="import" href="../admin/fp-admin-menu.html">
-<link rel="import" href="../admin/fp-admin-page.html">
 
 <dom-module id="framapp-polymer-app">
+  <!--<link rel="lazy-import" group="main" href="../categories/fp-category-selector.html">
+  <link rel="lazy-import" group="main" href="../fp-login-component.html">-->
+  <link rel="lazy-import" group="main" href="../../bower_components/paper-button/paper-button.html">
+  <link rel="lazy-import" group="main" href="../../bower_components/paper-icon-button/paper-icon-button.html">
+  <link rel="lazy-import" group="main" href="../../bower_components/app-route/app-location.html">
+  <link rel="lazy-import" group="main" href="../../bower_components/app-route/app-route.html">
+
+  <link rel="lazy-import" group="home" href="../fp-home-page.html">
+  <link rel="lazy-import" group="categories" href="../categories/fp-category-page.html">
+  <!--<link rel="lazy-import" group="product" href="../products/fp-product-page.html">-->
+  <link rel="lazy-import" group="admin-menu" href="../admin/fp-admin-menu.html">
+  <link rel="lazy-import" group="admin" href="../admin/fp-admin-page.html">
+
   <template>
       <style>
           :host {
@@ -55,7 +57,7 @@
                  data="{{routeData}}"
                  tail="{{subroute}}"></app-route>
 
-      <app-header-layout>
+      <app-header-layout id="layout">
           <app-header fixed>
             <app-toolbar>
               <paper-icon-button icon="icons:menu"
@@ -64,7 +66,7 @@
               <div main-title>
                 <a href="/" class="title"><paper-button>FramApp</paper-button></a>
               </div>
-              <fp-login-component signed-in="{{signedIn}}"></fp-login-component>
+              <fp-login-component signed-in="{{signedIn}}" on-signed-in-changed="_loadAdminMenu"></fp-login-component>
             </app-toolbar>
           </app-header>
           <app-drawer-layout>
@@ -77,6 +79,7 @@
               <iron-pages id="pages"
                           role="main"
                           selected="[[routeData.page]]"
+                          on-selected-changed="_loadView"
                           attr-for-selected="name">
                           
                   <fp-category-page name="categories"
@@ -96,8 +99,25 @@
     Polymer({
         
       is: 'framapp-polymer-app',
+      behaviors: [Polymer.LazyImportsBehavior],
 
-      properties: {
+      attached: function() {
+        this.importLazyGroup('main').then(this.$.layout.resetLayout.bind(this.$.layout));
+        this.importHref(this.resolveUrl('../categories/fp-category-selector.html'));
+        this.importHref(this.resolveUrl('../fp-login-component.html'));
+      },
+
+      _loadView: function(e) {
+        if (e.detail.value === 'product') {
+            this.importHref(this.resolveUrl('../products/fp-product-page.html'), this.$.layout.resetLayout.bind(this.$.layout));
+          } else {
+            this.importLazyGroup(e.detail.value || 'home').then(this.$.layout.resetLayout.bind(this.$.layout));
+          }
+      },
+
+      _loadAdminMenu: function(e) {
+        if(e.detail.value)
+          this.importLazyGroup("admin-menu").then(this.$.layout.resetLayout.bind(this.$.layout));
       }
     });
   </script>
