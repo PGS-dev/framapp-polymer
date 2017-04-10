@@ -1,0 +1,112 @@
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+<link rel="import" href="../../bower_components/app-route/app-location.html">
+<link rel="import" href="../../bower_components/iron-ajax/iron-ajax.html">
+<link rel="import" href="../../bower_components/auth-ajax/auth-ajax.html">
+<link rel="import" href="../../bower_components/iron-form/iron-form.html">
+<link rel="import" href="../../bower_components/paper-card/paper-card.html">
+<link rel="import" href="../../bower_components/paper-input/paper-input.html">
+<link rel="import" href="../../bower_components/paper-button/paper-button.html">
+<link rel="import" href="../../bower_components/paper-dialog/paper-dialog.html">
+
+<link rel="import" href="../behaviors/resources-behavior.html">
+
+<!--
+`fp-category-creator`
+
+
+@demo ../demo/fp-category-creator-demo.html 
+-->
+
+<dom-module id="fp-category-creator">
+  <template>
+    <style>
+      :host {
+        display: block;
+        padding: 25px;
+        --paper-button: {
+          float: right;
+          margin: 10px 0;
+          background-color: rgb(52, 152, 219);
+          color: white;
+        }
+      }
+      
+    </style>
+    <app-location path="{{path}}"></app-location>
+    <iron-ajax id="ajax"
+               auto
+               handle-as="json"
+               on-response="_handleGetResponse"></iron-ajax>
+
+    <paper-card>
+      <div class="card-content">
+        <form is="iron-form" 
+              id="form" 
+              method="POST"
+              content-type="application/json"
+              on-iron-form-presubmit="_handlePreSubmit"
+              on-iron-form-response="_handleResponse">
+        <paper-input id="categoryId"
+                     name="categoryId"
+                     label="Category id (seo slug)" 
+                     value="{{categoryId}}"></paper-input>
+        <paper-input id="title"
+                     name="title"
+                     label="Name" 
+                     value="[[category.title]]"></paper-input>
+        <paper-input id="description"
+                     name="description" 
+                     label="Description" 
+                     value="{{category.description}}"></paper-input>
+        <paper-button raised 
+                      on-click="_submit">Submit</paper-button>
+        </form>
+      </div>
+    </paper-card>
+    <paper-dialog id="modal">
+      <p>Category with the same Id exists</p>
+      <div class="buttons">
+        <paper-button dialog-confirm autofocus>Close</paper-button>
+      </div>
+    </paper-dialog>
+  </template>
+  <script>
+    Polymer({
+
+      is: 'fp-category-creator',
+      behaviors: [resourcesBehavior, Polymer.AuthTokenStoreBehavior],
+      properties: {
+      },
+
+      _submit: function(event) {
+        this.$.ajax.url = this.apiUrls.getCategory(this.categoryId) + "?auth=" + this.authToken;
+        this.$.ajax.generateRequest();
+      },
+
+      _handleGetResponse: function(response){
+        if(!response.detail.response){
+          this.$.form.action = this.apiUrls.getCategory(this.categoryId) + "?auth=" + this.authToken;
+          this.$.form.submit();
+        }
+        else{
+          this.$.modal.open();
+        }
+      },
+
+      _handleResponse: function(response){
+        this.path = "/admin/categories";
+      },
+
+      _handlePreSubmit: function(e){
+        this.$.form.request.method = "PUT";
+        this.$.form.method = "PUT";
+      },
+
+      ready: function() {
+        this.getAuthToken().then(function(token) {
+          this.authToken = token;
+        }.bind(this));
+      }
+    });
+  </script>
+</dom-module>

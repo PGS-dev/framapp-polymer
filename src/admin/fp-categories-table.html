@@ -18,6 +18,12 @@
           color: white;
         }
       }
+      paper-button.add-button {
+        background-color: rgb(52, 152, 219);
+        color: white;
+        margin-top: 15px;
+        float: right;
+      };
     </style>
       <app-location path="{{path}}"></app-location>
       <iron-ajax id="ajax"
@@ -42,6 +48,7 @@
           </paper-datatable-column>   
         </paper-datatable>
       </paper-material>
+      <a href="/admin/addCategory"><paper-button class="add-button" raised>Add</paper-button></a>
  </template>
  
  <script>

@@ -19,7 +19,8 @@
     "paper-collapse-item": "Collaborne/paper-collapse-item#^1.1.4",
     "paper-datatable": "^0.9.8",
     "iron-form": "PolymerElements/iron-form#^1.1.4",
-    "auth-ajax": "CaptainCodeman/auth-ajax#^0.0.3"
+    "auth-ajax": "CaptainCodeman/auth-ajax#^0.0.3",
+    "lazy-imports": "^0.0.2"
   },
   "devDependencies": {
     "iron-component-page": "PolymerElements/iron-component-page#^1.0.0",
