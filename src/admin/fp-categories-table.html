@@ -3,6 +3,8 @@
 <link rel="import" href="../../bower_components/paper-material/paper-material.html">
 <link rel="import" href="../../bower_components/paper-datatable/paper-datatable.html">
 
+<link rel="import" href="../behaviors/resources-behavior.html">
+
 <dom-module id="fp-categories-table">
   <template>
     <style>
@@ -18,8 +20,13 @@
       }
     </style>
       <app-location path="{{path}}"></app-location>
+      <iron-ajax id="ajax"
+                 method="DELETE"
+                 handle-as="json"></iron-ajax>
+
       <paper-material elevation="5">
-        <paper-datatable data="{{categories}}" >
+        <paper-datatable id="categoriesTable"
+                         data="{{categories}}" >
           <paper-datatable-column header="Id">
             <template>
                  {{_getIndex(item)}}
@@ -30,6 +37,7 @@
           <paper-datatable-column header="Action" property="id" >
               <template>
                  <paper-button on-tap="_gotoCategory" data-category-url$="/admin/category/[[item.id]]" >Edit</paper-button>
+                 <paper-button on-tap="_removeCategory" category-id$="[[item.id]]" >Remove</paper-button>
               </template>
           </paper-datatable-column>   
         </paper-datatable>
@@ -37,18 +45,35 @@
  </template>
  
  <script>
-  Polymer({
-   is: 'fp-categories-table',
-    properties: {
-    },
+   Polymer({
+     is: 'fp-categories-table',
+      behaviors: [resourcesBehavior, Polymer.AuthTokenStoreBehavior],
+      properties: {
+      },
 
-    _getIndex: function(item){
-      return this.categories.indexOf(item) + 1;
-    },
+      _getIndex: function(item){
+        return this.categories.indexOf(item) + 1;
+      },
 
-    _gotoCategory: function(event){
-      this.path = event.target.getAttribute('data-category-url');
-    },
-  });
+      _gotoCategory: function(event){
+        this.path = event.target.getAttribute('data-category-url');
+      },
+
+      _removeCategory: function(event){
+        var id = event.target.getAttribute('category-id');
+        this.$.ajax.url = this.apiUrls.getCategory(id) + "?auth=" + this.authToken;
+        this.$.ajax.generateRequest();
+
+        var index = this.categories.findIndex(function(element){return element.id == id});
+        this.categories.splice(index, 1);
+        this.$.categoriesTable.reload(); 
+      },
+
+      ready: function() {
+        this.getAuthToken().then(function(token) {
+          this.authToken = token;
+        }.bind(this));
+      }
+    });
   </script>
 </dom-module>
