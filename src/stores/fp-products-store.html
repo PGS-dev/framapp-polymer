@@ -20,7 +20,7 @@
         properties: {
           category: {
             type: Object,
-            value: null
+            value: {}
           },
           promotedOnly: {
             type: Boolean,
@@ -43,7 +43,7 @@
           products = this._toArray(e.detail.value);
           this._recomputeHack++;
         },
-        _computeProducts: function(category) {
+        _computeProducts: function() {
           var filters = [];
 
           if(this.promotedOnly) {
@@ -71,7 +71,7 @@
       }
 
       function _filterByCategory(element, index, array){
-        return element.category == this.category.id;
+        return !this.category.id || element.category === this.category.id;
       }
 
       function _filterByPromoted(element) {

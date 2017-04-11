@@ -1,20 +1,24 @@
 <link rel="import" href="../../bower_components/polymer/polymer.html">
 <link rel="import" href="../../bower_components/app-layout/app-layout.html">
-<link rel="import" href="../../bower_components/app-route/app-location.html">
-<link rel="import" href="../../bower_components/app-route/app-route.html">
-<link rel="import" href="../../bower_components/paper-icon-button/paper-icon-button.html">
+<link rel="import" href="../../bower_components/lazy-imports/lazy-imports.html">
 <link rel="import" href="../../bower_components/iron-pages/iron-pages.html">
-<link rel="import" href="../../bower_components/paper-button/paper-button.html">
-
-<link rel="import" href="../categories/fp-category-selector.html">
-<link rel="import" href="../fp-home-page.html">
-<link rel="import" href="../categories/fp-category-page.html">
-<link rel="import" href="../products/fp-product-page.html">
-<link rel="import" href="../fp-login-component.html">
-<link rel="import" href="../admin/fp-admin-menu.html">
-<link rel="import" href="../admin/fp-admin-page.html">
+<link rel="import" href="../../bower_components/polymerfire/firebase-app.html">
+<link rel="import" href="../../bower_components/polymerfire/firebase-auth.html">
 
 <dom-module id="framapp-polymer-app">
+  <link rel="lazy-import" group="main" href="../categories/fp-category-selector.html">
+  <link rel="lazy-import" group="main" href="../fp-login-component.html">
+  <link rel="lazy-import" group="main" href="../../bower_components/paper-button/paper-button.html">
+  <link rel="lazy-import" group="main" href="../../bower_components/paper-icon-button/paper-icon-button.html">
+  <link rel="lazy-import" group="main" href="../../bower_components/app-route/app-location.html">
+  <link rel="lazy-import" group="main" href="../../bower_components/app-route/app-route.html">
+
+  <link rel="lazy-import" group="fp-home-page" href="../fp-home-page.html">
+  <link rel="lazy-import" group="fp-category-page" href="../categories/fp-category-page.html">
+  <!--<link rel="lazy-import" group="fp-product-page" href="../products/fp-product-page.html">-->
+  <link rel="lazy-import" group="admin-menu" href="../admin/fp-admin-menu.html">
+  <link rel="lazy-import" group="fp-admin-page" href="../admin/fp-admin-page.html">
+
   <template>
       <style>
           :host {
@@ -55,7 +59,7 @@
                  data="{{routeData}}"
                  tail="{{subroute}}"></app-route>
 
-      <app-header-layout>
+      <app-header-layout id="layout">
           <app-header fixed>
             <app-toolbar>
               <paper-icon-button icon="icons:menu"
@@ -64,7 +68,7 @@
               <div main-title>
                 <a href="/" class="title"><paper-button>FramApp</paper-button></a>
               </div>
-              <fp-login-component signed-in="{{signedIn}}"></fp-login-component>
+              <fp-login-component signed-in="{{signedIn}}" on-signed-in-changed="_loadAdminMenu"></fp-login-component>
             </app-toolbar>
           </app-header>
           <app-drawer-layout>
@@ -77,6 +81,7 @@
               <iron-pages id="pages"
                           role="main"
                           selected="[[routeData.page]]"
+                          on-iron-select="_loadView"
                           attr-for-selected="name">
                           
                   <fp-category-page name="categories"
@@ -96,8 +101,25 @@
     Polymer({
         
       is: 'framapp-polymer-app',
+      behaviors: [Polymer.LazyImportsBehavior],
 
-      properties: {
+      attached: function() {
+        this.async(function(){
+          this.importLazyGroup('main');
+        });
+      },
+
+      _loadView: function(e) {
+        if (e.detail.value === 'product') {
+            this.importHref(this.resolveUrl('../products/fp-product-page.html'));
+          } else {
+            this.importLazyGroup(e.detail.item.localName);
+          }
+      },
+
+      _loadAdminMenu: function(e) {
+        if(e.detail.value)
+          this.importLazyGroup("admin-menu");
       }
     });
   </script>
