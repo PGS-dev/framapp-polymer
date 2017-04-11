@@ -102,7 +102,9 @@
       behaviors: [Polymer.LazyImportsBehavior],
 
       attached: function() {
-        this.importLazyGroup('main');
+        this.async(function(){
+          this.importLazyGroup('main');
+        });
       },
 
       _loadView: function(e) {
