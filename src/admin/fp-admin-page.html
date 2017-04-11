@@ -1,13 +1,17 @@
 <link rel="import" href="../../bower_components/polymer/polymer.html">
 <link rel="import" href="../../bower_components/app-route/app-route.html">
 <link rel="import" href="../../bower_components/iron-pages/iron-pages.html">
-<link rel="import" href="../../bower_components/lazy-imports/lazy-imports.html">
+<!--<link rel="import" href="../../bower_components/lazy-imports/lazy-imports.html">-->
+<link rel="import" href="fp-categories-table.html">
+<link rel="import" href="fp-products-table.html">
+<link rel="import" href="fp-category-editor.html">
+<link rel="import" href="fp-category-creator.html">
 
 <dom-module id="fp-admin-page">
-  <link rel="lazy-import" href="fp-categories-table.html" group="fp-categories-table">
+  <!--<link rel="lazy-import" href="fp-categories-table.html" group="fp-categories-table">
   <link rel="lazy-import" href="fp-products-table.html" group="fp-products-table">
   <link rel="lazy-import" href="fp-category-editor.html" group="fp-category-editor">
-  <link rel="lazy-import" href="fp-category-creator.html" group="fp-category-creator">
+  <link rel="lazy-import" href="fp-category-creator.html" group="fp-category-creator">-->
 
   <template>
     <template is="dom-if" if="{{signedIn}}"  restamp="true">
@@ -36,13 +40,12 @@
  <script>
   Polymer({
     is: 'fp-admin-page',
-    behaviors: [Polymer.LazyImportsBehavior],
+    behaviors: [
+      //Polymer.LazyImportsBehavior
+    ],
     
     _select: function(e){
-      this.importLazyGroup(e.detail.item.localName).then(function(results) {
-        console.log(results);
-        this.fire("import-loaded", results);
-      }.bind(this));
+      //this.importLazyGroup(e.detail.item.localName);
     }
   });
   </script>
