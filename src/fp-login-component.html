@@ -17,7 +17,9 @@
       <firebase-app
         auth-domain="[[authData.authDomain]]"
         database-url="[[authData.databaseUrl]]"
-        api-key="[[authData.apiKey]]">
+        api-key="[[authData.apiKey]]"
+        messaging-sender-id="[[authData.messagingSenderId]]"
+        storage-bucket="[[authData.storageBucket]]">
       </firebase-app>
       <firebase-auth id="auth" user="{{user}}" provider="google" on-error="handleError" signed-in="{{signedIn}}">
       </firebase-auth>
@@ -54,8 +56,6 @@
 
             ready: function(){
               this.$.store.setTokenRefresh(this._refreshToken.bind(this));
-              this.importHref(this.resolveUrl('../bower_components/polymerfire/firebase-app.html'));
-              this.importHref(this.resolveUrl('../bower_components/polymerfire/firebase-auth.html'));
             },
 
             _refreshToken: function() {

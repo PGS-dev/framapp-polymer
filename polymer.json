@@ -12,9 +12,7 @@
     "bower_components/paper-button/paper-button.html",
     "bower_components/paper-icon-button/paper-icon-button.html",
     "bower_components/app-route/app-location.html",
-    "bower_components/app-route/app-route.html",
-    "bower_components/polymerfire/firebase-app.html",
-    "bower_components/polymerfire/firebase-auth.html"
+    "bower_components/app-route/app-route.html"
   ],
   "sourceGlobs": [
    "src/**/*",
@@ -30,7 +28,7 @@
   },
   "builds": [{
     "bundle": true,
-    "js": {"minify": false},
+    "js": {"minify": true},
     "css": {"minify": true},
     "html": {"minify": true}
   }]
