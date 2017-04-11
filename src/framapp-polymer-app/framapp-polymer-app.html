@@ -13,11 +13,11 @@
   <link rel="lazy-import" group="main" href="../../bower_components/app-route/app-location.html">
   <link rel="lazy-import" group="main" href="../../bower_components/app-route/app-route.html">
 
-  <link rel="lazy-import" group="home" href="../fp-home-page.html">
-  <link rel="lazy-import" group="categories" href="../categories/fp-category-page.html">
-  <!--<link rel="lazy-import" group="product" href="../products/fp-product-page.html">-->
+  <link rel="lazy-import" group="fp-home-page" href="../fp-home-page.html">
+  <link rel="lazy-import" group="fp-category-page" href="../categories/fp-category-page.html">
+  <!--<link rel="lazy-import" group="fp-product-page" href="../products/fp-product-page.html">-->
   <link rel="lazy-import" group="admin-menu" href="../admin/fp-admin-menu.html">
-  <link rel="lazy-import" group="admin" href="../admin/fp-admin-page.html">
+  <link rel="lazy-import" group="fp-admin-page" href="../admin/fp-admin-page.html">
 
   <template>
       <style>
@@ -81,7 +81,7 @@
               <iron-pages id="pages"
                           role="main"
                           selected="[[routeData.page]]"
-                          on-selected-changed="_loadView"
+                          on-iron-select="_loadView"
                           attr-for-selected="name">
                           
                   <fp-category-page name="categories"
@@ -113,7 +113,7 @@
         if (e.detail.value === 'product') {
             this.importHref(this.resolveUrl('../products/fp-product-page.html'));
           } else {
-            this.importLazyGroup(e.detail.value || 'home');
+            this.importLazyGroup(e.detail.item.localName);
           }
       },
 
