@@ -27,5 +27,11 @@
   ],
   "lint":{
     "rules": [ "polymer-1" ]
-  }
+  },
+  "builds": [{
+    "bundle": true,
+    "js": {"minify": false},
+    "css": {"minify": true},
+    "html": {"minify": true}
+  }]
 }
