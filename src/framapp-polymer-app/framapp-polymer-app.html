@@ -4,8 +4,8 @@
 <link rel="import" href="../../bower_components/iron-pages/iron-pages.html">
 
 <dom-module id="framapp-polymer-app">
-  <!--<link rel="lazy-import" group="main" href="../categories/fp-category-selector.html">
-  <link rel="lazy-import" group="main" href="../fp-login-component.html">-->
+  <link rel="lazy-import" group="main" href="../categories/fp-category-selector.html">
+  <link rel="lazy-import" group="main" href="../fp-login-component.html">
   <link rel="lazy-import" group="main" href="../../bower_components/paper-button/paper-button.html">
   <link rel="lazy-import" group="main" href="../../bower_components/paper-icon-button/paper-icon-button.html">
   <link rel="lazy-import" group="main" href="../../bower_components/app-route/app-location.html">
@@ -102,22 +102,20 @@
       behaviors: [Polymer.LazyImportsBehavior],
 
       attached: function() {
-        this.importLazyGroup('main').then(this.$.layout.resetLayout.bind(this.$.layout));
-        this.importHref(this.resolveUrl('../categories/fp-category-selector.html'));
-        this.importHref(this.resolveUrl('../fp-login-component.html'));
+        this.importLazyGroup('main');
       },
 
       _loadView: function(e) {
         if (e.detail.value === 'product') {
-            this.importHref(this.resolveUrl('../products/fp-product-page.html'), this.$.layout.resetLayout.bind(this.$.layout));
+            this.importHref(this.resolveUrl('../products/fp-product-page.html'));
           } else {
-            this.importLazyGroup(e.detail.value || 'home').then(this.$.layout.resetLayout.bind(this.$.layout));
+            this.importLazyGroup(e.detail.value || 'home');
           }
       },
 
       _loadAdminMenu: function(e) {
         if(e.detail.value)
-          this.importLazyGroup("admin-menu").then(this.$.layout.resetLayout.bind(this.$.layout));
+          this.importLazyGroup("admin-menu");
       }
     });
   </script>

@@ -12,7 +12,9 @@
     "bower_components/paper-button/paper-button.html",
     "bower_components/paper-icon-button/paper-icon-button.html",
     "bower_components/app-route/app-location.html",
-    "bower_components/app-route/app-route.html"
+    "bower_components/app-route/app-route.html",
+    "bower_components/polymerfire/firebase-app.html",
+    "bower_components/polymerfire/firebase-auth.html"
   ],
   "sourceGlobs": [
    "src/**/*",
