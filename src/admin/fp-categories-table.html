@@ -4,6 +4,7 @@
 <link rel="import" href="../../bower_components/paper-datatable/paper-datatable.html">
 
 <link rel="import" href="../behaviors/resources-behavior.html">
+<link rel="import" href="../stores/fp-categories-store.html">
 
 <dom-module id="fp-categories-table">
   <template>
@@ -26,6 +27,8 @@
       };
     </style>
       <app-location path="{{path}}"></app-location>
+      <fp-categories-store categories="{{categories}}"></fp-categories-store>
+
       <iron-ajax id="ajax"
                  method="DELETE"
                  handle-as="json"></iron-ajax>
@@ -73,7 +76,7 @@
 
         var index = this.categories.findIndex(function(element){return element.id == id});
         this.categories.splice(index, 1);
-        this.$.categoriesTable.reload(); 
+        this.$.categoriesTable.reload();
       },
 
       ready: function() {

@@ -3,30 +3,80 @@
 <link rel="import" href="../behaviors/resources-behavior.html">
 
 <dom-module id="fp-products-store">
-    <template>
-        <iron-ajax auto
-            url="[[apiUrls.getProducts]]"
-            handle-as="json"
-            last-response="{{response}}"></iron-ajax>
-    </template>
-    <script>
-        Polymer({
+  <template>
+    <iron-ajax id="productsSource"
+               url="[[apiUrls.getProducts]]"
+               handle-as="json"
+               on-last-response-changed="_storeProducts"></iron-ajax>
+  </template>
+  <script>
+    (function () {
+      var products;
 
-            is: 'fp-products-store',
-            behaviors: [toarrayBehavior, resourcesBehavior],
-            properties: {
-                response: Object,
-                category: {
-                    type: String,
-                    notify: true,
-                    value: ''
-                },
-                products: {
-                    type: Array,
-                    notify: true,
-                    computed: '_toArray(response)',
-                },
-            },
-        });
-    </script>
+      Polymer({
+
+        is: 'fp-products-store',
+        behaviors: [toarrayBehavior, resourcesBehavior],
+        properties: {
+          category: {
+            type: Object,
+            value: {}
+          },
+          promotedOnly: {
+            type: Boolean,
+            value: false
+          },
+          products: {
+            type: Array,
+            notify: true,
+            computed: '_computeProducts(category, promotedOnly, _recomputeHack)',
+          },
+        },
+        ready: function () {
+          this._recomputeHack = 0;
+
+          if (!products) {
+            this.$.productsSource.generateRequest();
+          }
+        },
+        _storeProducts: function (e) {
+          products = this._toArray(e.detail.value);
+          this._recomputeHack++;
+        },
+        _computeProducts: function() {
+          var filters = [];
+
+          if(this.promotedOnly) {
+            filters.push(_filterByPromoted);
+          }
+
+          if(this.category) {
+            filters.push(_filterByCategory);
+          }
+
+          return (products || []).filter(applyFilters(filters), this);
+        },
+      });
+
+      function applyFilters(filters) {
+        return function() {
+          for(var i = 0; i < filters.length; i++) {
+            if(filters[i].apply(this, arguments) === false){
+              return false;
+            }
+          }
+
+          return true;
+        };
+      }
+
+      function _filterByCategory(element, index, array){
+        return !this.category.id || element.category === this.category.id;
+      }
+
+      function _filterByPromoted(element) {
+        return element.promoted;
+      }
+    })();
+  </script>
 </dom-module>
