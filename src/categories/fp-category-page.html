@@ -2,6 +2,7 @@
 <link rel="import" href="../../bower_components/app-route/app-route.html">
 
 <link rel="import" href="../products/fp-product-card.html">
+<link rel="import" href="../stores/fp-products-store.html">
 
 <!--
 `fp-category-page`
@@ -26,7 +27,8 @@
                    pattern="/:id"
                    data="{{category}}"></app-route>
 
-        <template is="dom-repeat" items="[[_filteredProducts]]" as="product">
+        <fp-products-store products="{{products}}" category="[[category]]"></fp-products-store>
+        <template is="dom-repeat" items="[[products]]" as="product">
             <fp-product-card product="[[product]]"></fp-product-card>
         </template>
   </template>
@@ -35,22 +37,6 @@
 
       is: 'fp-category-page',
 
-      properties: {
-
-          products: Array,
-          _filteredProducts:{
-              type: Array,
-              computed: '_getFiltered(products, category.id)'
-            }
-      },
-
-      _getFiltered: function(){
-        return this.products.filter(this._filterByCategory, this)
-      },
-
-      _filterByCategory: function(element, index, array){
-          return element.category == this.category.id;
-      },
     });
   </script>
 </dom-module>

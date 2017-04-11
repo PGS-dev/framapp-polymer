@@ -1,6 +1,7 @@
 <link rel="import" href="../bower_components/polymer/polymer.html">
 
 <link rel="import" href="products/fp-product-card.html">
+<link rel="import" href="stores/fp-products-store.html">
 
 <!--
 `fp-home-page`
@@ -20,30 +21,15 @@
         padding: 4px;
       }
     </style>
+
+        <fp-products-store products="{{_promoted}}" promoted-only="true"></fp-products-store>
         <template is="dom-repeat" items="[[_promoted]]" as="product">
             <fp-product-card product="[[product]]"></fp-product-card>
         </template>
   </template>
   <script>
     Polymer({
-
       is: 'fp-home-page',
-
-      properties: {
-          products: Array,
-          _promoted:{
-              type: Array,
-              computed: '_getPromoted(products)'
-            }
-      },
-
-      _getPromoted: function(){
-        return this.products.filter(this._filterPromoted)
-      },
-
-      _filterPromoted: function(element, index, array){
-        return element.promoted;
-      }
     });
   </script>
 </dom-module>

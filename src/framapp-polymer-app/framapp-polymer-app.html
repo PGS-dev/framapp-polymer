@@ -7,8 +7,6 @@
 <link rel="import" href="../../bower_components/paper-button/paper-button.html">
 
 <link rel="import" href="../categories/fp-category-selector.html">
-<link rel="import" href="../stores/fp-categories-store.html">
-<link rel="import" href="../stores/fp-products-store.html">
 <link rel="import" href="../fp-home-page.html">
 <link rel="import" href="../categories/fp-category-page.html">
 <link rel="import" href="../products/fp-product-page.html">
@@ -56,9 +54,7 @@
                  pattern="/:page"
                  data="{{routeData}}"
                  tail="{{subroute}}"></app-route>
-      <fp-categories-store categories={{categories}}></fp-categories-store>
-      <fp-products-store products={{products}}></fp-products-store>
-      
+
       <app-header-layout>
           <app-header fixed>
             <app-toolbar>
@@ -74,7 +70,7 @@
           <app-drawer-layout>
               <app-drawer opened="{{!drawerOpened}}">
                   <div class="app-drawer-wrapper">
-                    <fp-category-selector categories="[[categories]]"></fp-category-selector>
+                    <fp-category-selector></fp-category-selector>
                     <fp-admin-menu hidden$="[[!signedIn]]"></fp-admin-menu>
                   </div>
               </app-drawer>
@@ -84,15 +80,11 @@
                           attr-for-selected="name">
                           
                   <fp-category-page name="categories"
-                                    products="[[products]]"
                                     route="[[subroute]]"></fp-category-page>
-                  <fp-home-page name=""
-                                products=[[products]]></fp-home-page>
+                  <fp-home-page name=""></fp-home-page>
                   <fp-product-page name="product"
                                    route="[[subroute]]"></fp-product-page>
                   <fp-admin-page name="admin"
-                                 categories="[[categories]]"
-                                 products="[[products]]"
                                  signed-in="[[signedIn]]"
                                  route="[[subroute]]"></fp-admin-page>
               </iron-pages>
