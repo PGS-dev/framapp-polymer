@@ -1,6 +1,7 @@
 <link rel="import" href="../../bower_components/iron-ajax/iron-ajax.html">
 <link rel="import" href="../behaviors/toarray-behavior.html">
 <link rel="import" href="../behaviors/resources-behavior.html">
+<link rel="import" href="../../bower_components/polymer-redux/polymer-redux.html">
 
 <dom-module id="fp-products-store">
   <template>
@@ -10,13 +11,35 @@
                on-last-response-changed="_storeProducts"></iron-ajax>
   </template>
   <script>
-    (function () {
-      var products;
+      var products = Redux.createStore(function(state, action) {
+        if(!state) return {
+          isLoading: false,
+          items: []
+        };
+
+        switch(action.type) {
+          case 'load-products':
+            return Object.assign({}, state, {
+              isLoading: true
+            });
+            break;
+          case 'products-loaded':
+            return Object.assign({}, state, {
+              isLoading: false,
+              items: action.data
+            });
+            break;
+          default:
+            return state;
+        }
+      });
+
+      var ReduxBehavior = PolymerRedux(products);
 
       Polymer({
 
         is: 'fp-products-store',
-        behaviors: [toarrayBehavior, resourcesBehavior],
+        behaviors: [toarrayBehavior, resourcesBehavior, ReduxBehavior],
         properties: {
           category: {
             type: Object,
@@ -26,37 +49,52 @@
             type: Boolean,
             value: false
           },
-          products: {
-            type: Array,
+          products:{
             notify: true,
-            computed: '_computeProducts(category, promotedOnly, _recomputeHack)',
-          },
+            statePath: function(state) {
+              return computeProducts.call(this, state.items, this.category, this.promotedOnly)
+            }
+          }
         },
-        ready: function () {
-          this._recomputeHack = 0;
 
-          if (!products) {
+        actions: {
+          loadProducts: function() {
+            return {
+              type: 'load-products'
+            }
+          },
+          productsLoaded: function(data) {
+            return {
+              type: 'products-loaded',
+              data: data
+            }
+          }
+        },
+
+        ready: function () {
+          if (this.getState().items.length === 0 && !this.getState().isLoading) {
+            this.dispatch('loadProducts');
             this.$.productsSource.generateRequest();
           }
         },
         _storeProducts: function (e) {
-          products = this._toArray(e.detail.value);
-          this._recomputeHack++;
-        },
-        _computeProducts: function() {
-          var filters = [];
-
-          if(this.promotedOnly) {
-            filters.push(_filterByPromoted);
-          }
-
-          if(this.category) {
-            filters.push(_filterByCategory);
-          }
-
-          return (products || []).filter(applyFilters(filters), this);
+          this.dispatch('productsLoaded', this._toArray(e.detail.value));
         },
       });
+
+      function computeProducts(products, category, promotedOnly) {
+        var filters = [];
+
+        if(promotedOnly) {
+          filters.push(_filterByPromoted);
+        }
+
+        if(category) {
+          filters.push(_filterByCategory);
+        }
+
+        return (products || []).filter(applyFilters(filters), this);
+      }
 
       function applyFilters(filters) {
         return function() {
@@ -77,6 +115,5 @@
       function _filterByPromoted(element) {
         return element.promoted;
       }
-    })();
   </script>
 </dom-module>
