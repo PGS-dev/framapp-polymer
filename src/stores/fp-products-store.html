@@ -12,6 +12,7 @@
                on-last-response-changed="_storeProducts"></iron-ajax>
   </template>
   <script>
+    (function() {
       var products = Redux.createStore(function(state, action) {
         if(!state) return {
           isLoading: false,
@@ -118,5 +119,6 @@
       function _filterByPromoted(element) {
         return element.promoted;
       }
+    })();
   </script>
 </dom-module>
