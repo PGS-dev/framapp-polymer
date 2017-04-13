@@ -110,7 +110,7 @@
       },
 
       _loadView: function(e) {
-        if (e.detail.value === 'product') {
+        if (e.detail.item.localName === 'fp-product-page') {
             this.importHref(this.resolveUrl('../products/fp-product-page.html'));
           } else {
             this.importLazyGroup(e.detail.item.localName);
