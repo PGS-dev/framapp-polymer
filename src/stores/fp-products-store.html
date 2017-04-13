@@ -2,6 +2,7 @@
 <link rel="import" href="../behaviors/toarray-behavior.html">
 <link rel="import" href="../behaviors/resources-behavior.html">
 <link rel="import" href="../../bower_components/polymer-redux/polymer-redux.html">
+<link rel="import" href="redux.html">
 
 <dom-module id="fp-products-store">
   <template>
@@ -49,11 +50,14 @@
             type: Boolean,
             value: false
           },
-          products:{
+          allProducts: {
             notify: true,
-            statePath: function(state) {
-              return computeProducts.call(this, state.items, this.category, this.promotedOnly)
-            }
+            readOnly: true,
+            statePath: 'items'
+          },
+          products: {
+            notify: true,
+            computed: '_computeProducts(allProducts, category, promotedOnly)'
           }
         },
 
@@ -80,21 +84,20 @@
         _storeProducts: function (e) {
           this.dispatch('productsLoaded', this._toArray(e.detail.value));
         },
+        _computeProducts: function (products, category, promotedOnly) {
+          var filters = [];
+
+          if (promotedOnly) {
+            filters.push(_filterByPromoted);
+          }
+
+          if (category) {
+            filters.push(_filterByCategory);
+          }
+
+          return (products || []).filter(applyFilters(filters), this);
+        }
       });
-
-      function computeProducts(products, category, promotedOnly) {
-        var filters = [];
-
-        if(promotedOnly) {
-          filters.push(_filterByPromoted);
-        }
-
-        if(category) {
-          filters.push(_filterByCategory);
-        }
-
-        return (products || []).filter(applyFilters(filters), this);
-      }
 
       function applyFilters(filters) {
         return function() {
