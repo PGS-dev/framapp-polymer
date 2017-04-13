@@ -1,6 +1,7 @@
 <link rel="import" href="../../bower_components/iron-ajax/iron-ajax.html">
 <link rel="import" href="../behaviors/toarray-behavior.html">
 <link rel="import" href="../behaviors/resources-behavior.html">
+<link rel="import" href="redux.html">
 
 <dom-module id="fp-categories-store">
   <template>
@@ -12,32 +13,66 @@
   <script>
 
     (function () {
-      var categories;
+      var categories = Redux.createStore(function(state, action) {
+        if(!state) return {
+          isLoading: false,
+          items: []
+        };
+
+        switch(action.type) {
+          case 'load-categories':
+            return Object.assign({}, state, {
+              isLoading: true
+            });
+            break;
+          case 'categories-loaded':
+            return Object.assign({}, state, {
+              isLoading: false,
+              items: action.data
+            });
+            break;
+          default:
+            return state;
+        }
+      });
 
       Polymer({
 
         is: 'fp-categories-store',
-        behaviors: [toarrayBehavior, resourcesBehavior],
+        behaviors: [toarrayBehavior, resourcesBehavior, PolymerRedux(categories)],
         properties: {
           response: Object,
           categories: {
             type: Array,
             notify: true,
-            computed: '_computeCategories(_recomputeHack)',
+            readOnly: true,
+            statePath: 'items'
           },
         },
 
-        ready: function () {
-          this._recomputeHack = 0;
+        actions: {
+          loadCategories: function() {
+            return {
+              type: 'load-categories'
+            }
+          },
+          categoriesLoaded: function(data) {
+            return {
+              type: 'categories-loaded',
+              data: data
+            }
+          }
+        },
 
-          if (!categories) {
+        ready: function () {
+          if (this.getState().items.length === 0 && !this.getState().isLoading) {
+            this.dispatch('loadCategories');
             this.$.categoriesSource.generateRequest();
           }
         },
 
         _storeCategories: function(e) {
-          categories = this._toArray(e.detail.value);
-          this._recomputeHack++;
+          this.dispatch('categoriesLoaded', this._toArray(e.detail.value));
         },
 
         _computeCategories: function() {
