@@ -17,6 +17,7 @@
       <iron-pages id="adminPages"
                   role="main"
                   selected="[[routeData.page]]"
+                  on-selected-item-changed="_load"
                   attr-for-selected="name">
 
         <fp-categories-table name="categories"></fp-categories-table>
@@ -31,7 +32,11 @@
  
  <script>
   Polymer({
-    is: 'fp-admin-page'
+    is: 'fp-admin-page',
+    _load: function(e) {
+      if(e.detail.value && e.detail.value.load)
+        e.detail.value.load();
+    }
   });
   </script>
 </dom-module>

@@ -19,8 +19,7 @@
         }
       }
     </style>
-      <app-location path="{{path}}"></app-location>
-      <fp-categories-store categories="{{categories}}"></fp-categories-store>
+      <fp-categories-store id="store" categories="{{categories}}"></fp-categories-store>
 
       <paper-material elevation="5">
         <paper-datatable data="{{categories}}" >
@@ -33,7 +32,7 @@
           </paper-datatable-column>  
           <paper-datatable-column header="Action" property="id" >
               <template>
-                 <paper-button on-tap="_gotoCategory" data-category-url$="/admin/category/[[item.id]]" >Edit</paper-button>
+                 <paper-button on-tap="_gotoCategory" data-category-id$="[[item.id]]" >Edit</paper-button>
               </template>
           </paper-datatable-column>   
         </paper-datatable>
@@ -43,7 +42,9 @@
  <script>
   Polymer({
    is: 'fp-categories-table',
-    properties: {
+
+    load: function() {
+      this.$.store.loadCategories();
     },
 
     _getIndex: function(item){
@@ -51,7 +52,7 @@
     },
 
     _gotoCategory: function(event){
-      this.path = event.target.getAttribute('data-category-url');
+      this.$.store.editCategory(event.target.getAttribute('data-category-id'));
     },
   });
   </script>

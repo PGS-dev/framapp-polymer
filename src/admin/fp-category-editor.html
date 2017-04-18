@@ -1,6 +1,5 @@
 <link rel="import" href="../../bower_components/polymer/polymer.html">
 <link rel="import" href="../../bower_components/app-route/app-route.html">
-<link rel="import" href="../../bower_components/auth-ajax/auth-ajax.html">
 <link rel="import" href="../../bower_components/iron-form/iron-form.html">
 <link rel="import" href="../../bower_components/paper-card/paper-card.html">
 <link rel="import" href="../../bower_components/paper-input/paper-input.html">
@@ -27,18 +26,14 @@
     <app-route route="{{route}}"
                pattern="/:id"
                data="{{selected}}"></app-route>
-    <iron-ajax auto
-               url="[[requestUrl]]"
-               handle-as="json"
-               last-response="{{category}}"></iron-ajax>
+    <fp-categories-store id="store" edited-category="{{category}}"></fp-categories-store>
 
     <paper-card>
       <div class="card-content">
         <form is="iron-form" 
               id="form" 
               method="POST"
-              content-type="application/json"
-              action="[[requestUrl]]?auth=[[authToken]]">
+              content-type="application/json">
         <paper-input id="title"
                      name="title"
                      label="Name" 
@@ -57,31 +52,16 @@
     Polymer({
 
       is: 'fp-category-editor',
-      behaviors: [resourcesBehavior, Polymer.AuthTokenStoreBehavior],
-      properties: {
-          requestUrl: {
-              type: String,
-              computed: '_getCategory(selected.id)'
-          }
+
+      _submit: function() {
+        this.$.store.saveCategory(this.selected.id, this.$.form.serialize());
       },
 
-      _getCategory: function(id){
-          return this.apiUrls.getCategory(id);
+      attached: function() {
+        if (!this.category && this.selected.id) {
+          this.$.store.editCategory(this.selected.id);
+        }
       },
-
-      _submit: function(event) {
-        this.$.form.submit();
-      },
-
-      ready: function() {
-        this.$.form.addEventListener('iron-form-presubmit', function() {
-          this.request.method = 'PUT';
-        });
-
-        this.getAuthToken().then(function(token) {
-          this.authToken = token;
-        }.bind(this));
-      }
     });
   </script>
 </dom-module>

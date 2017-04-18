@@ -1,84 +1,99 @@
-<link rel="import" href="../../bower_components/iron-ajax/iron-ajax.html">
+<link rel="import" href="../../bower_components/auth-ajax/auth-ajax.html">
 <link rel="import" href="../behaviors/toarray-behavior.html">
 <link rel="import" href="../behaviors/resources-behavior.html">
 <link rel="import" href="redux.html">
 
 <dom-module id="fp-categories-store">
-  <template>
-    <iron-ajax id="categoriesSource"
-      url="[[apiUrls.getCategories]]"
-      handle-as="json"
-      on-last-response-changed="_storeCategories"></iron-ajax>
-  </template>
   <script>
 
     (function () {
-      var categories = Redux.createStore(function(state, action) {
-        if(!state) return {
-          isLoading: false,
-          items: []
-        };
-
-        switch(action.type) {
-          case 'load-categories':
-            return Object.assign({}, state, {
-              isLoading: true
-            });
-            break;
-          case 'categories-loaded':
-            return Object.assign({}, state, {
-              isLoading: false,
-              items: action.data
-            });
-            break;
-          default:
-            return state;
-        }
-      });
 
       Polymer({
 
         is: 'fp-categories-store',
-        behaviors: [toarrayBehavior, resourcesBehavior, PolymerRedux(categories)],
+        behaviors: [FramappReduxStore, Polymer.AuthTokenStoreBehavior],
         properties: {
           response: Object,
           categories: {
             type: Array,
             notify: true,
             readOnly: true,
-            statePath: 'items'
+            statePath: 'categories.items'
           },
-        },
-
-        actions: {
-          loadCategories: function() {
-            return {
-              type: 'load-categories'
-            }
-          },
-          categoriesLoaded: function(data) {
-            return {
-              type: 'categories-loaded',
-              data: data
-            }
+          editedCategory: {
+            notify: true,
+            readOnly: true,
+            statePath: 'categories.editedCategory'
           }
         },
 
-        ready: function () {
-          if (this.getState().items.length === 0 && !this.getState().isLoading) {
-            this.dispatch('loadCategories');
-            this.$.categoriesSource.generateRequest();
-          }
+        loadCategories: function () {
+          this.dispatch(loadCategories);
         },
 
-        _storeCategories: function(e) {
-          this.dispatch('categoriesLoaded', this._toArray(e.detail.value));
+        editCategory: function (categoryId) {
+          this.dispatch(editCategory(categoryId));
         },
 
-        _computeCategories: function() {
-          return categories;
-        }
+        saveCategory: function(categoryId, category) {
+          this.getAuthToken().then(function(token) {
+            this.dispatch(saveCategory(categoryId, category, token));
+          }.bind(this));
+        },
+
       });
+
+      function saveCategory(categoryId, category, token) {
+        return function(dispatch) {
+          var categoryUrl = resourcesBehavior.properties.apiUrls.value.getCategory(categoryId);
+
+          return window.fetch(categoryUrl + '?auth=' + token, {
+            method: 'put',
+            body: JSON.stringify(category)
+          }).then(function() {
+            dispatch(loadCategories);
+          });
+        };
+      }
+
+      function editCategory(categoryId) {
+        return function(dispatch) {
+          var categoryUrl = resourcesBehavior.properties.apiUrls.value.getCategory(categoryId);
+
+          return window.fetch(categoryUrl)
+            .then(function(response) {
+              return response.json();
+            })
+            .then(function(category) {
+              dispatch(showEditedCategory(categoryId, category));
+            });
+        };
+      }
+
+      function showEditedCategory(categoryId, category) {
+        return {
+          type: 'open-category-editor',
+          categoryId: categoryId,
+          category: category
+        }
+      }
+
+      function showCategoryList(categories) {
+        return {
+          type: 'categories-loaded',
+          categories: categories
+        }
+      }
+
+      function loadCategories(dispatch) {
+          return window.fetch(resourcesBehavior.properties.apiUrls.value.getCategories)
+            .then(function(response) {
+              return response.json();
+            })
+            .then(function(categories) {
+              dispatch(showCategoryList(toarrayBehavior._toArray(categories)));
+            });
+      }
     })();
   </script>
 </dom-module>

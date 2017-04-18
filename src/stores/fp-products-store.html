@@ -4,43 +4,13 @@
 <link rel="import" href="redux.html">
 
 <dom-module id="fp-products-store">
-  <template>
-    <iron-ajax id="productsSource"
-               url="[[apiUrls.getProducts]]"
-               handle-as="json"
-               on-last-response-changed="_storeProducts"></iron-ajax>
-  </template>
   <script>
     (function() {
-      var products = Redux.createStore(function(state, action) {
-        if(!state) return {
-          isLoading: false,
-          items: []
-        };
-
-        switch(action.type) {
-          case 'load-products':
-            return Object.assign({}, state, {
-              isLoading: true
-            });
-            break;
-          case 'products-loaded':
-            return Object.assign({}, state, {
-              isLoading: false,
-              items: action.data
-            });
-            break;
-          default:
-            return state;
-        }
-      });
-
-      var ReduxBehavior = PolymerRedux(products);
 
       Polymer({
 
         is: 'fp-products-store',
-        behaviors: [toarrayBehavior, resourcesBehavior, ReduxBehavior],
+        behaviors: [FramappReduxStore, Polymer.AuthTokenStoreBehavior],
         properties: {
           category: {
             type: Object,
@@ -53,37 +23,27 @@
           allProducts: {
             notify: true,
             readOnly: true,
-            statePath: 'items'
+            statePath: 'products.items'
           },
           products: {
             notify: true,
             computed: '_computeProducts(allProducts, category, promotedOnly)'
-          }
-        },
-
-        actions: {
-          loadProducts: function() {
-            return {
-              type: 'load-products'
-            }
           },
-          productsLoaded: function(data) {
-            return {
-              type: 'products-loaded',
-              data: data
-            }
+          editedProduct: {
+            notify: true,
+            readOnly: true,
+            statePath: 'products.editedProduct'
           }
         },
 
-        ready: function () {
-          if (this.getState().items.length === 0 && !this.getState().isLoading) {
-            this.dispatch('loadProducts');
-            this.$.productsSource.generateRequest();
-          }
+        loadProducts: function () {
+          this.dispatch(loadProducts);
         },
-        _storeProducts: function (e) {
-          this.dispatch('productsLoaded', this._toArray(e.detail.value));
+
+        editProduct: function (productsId) {
+          this.dispatch(editProduct(productsId));
         },
+
         _computeProducts: function (products, category, promotedOnly) {
           var filters = [];
 
@@ -117,6 +77,45 @@
 
       function _filterByPromoted(element) {
         return element.promoted;
+      }
+
+      function productsLoaded(data) {
+        return {
+          type: 'products-loaded',
+          data: toarrayBehavior._toArray(data)
+        };
+      }
+
+      function loadProducts(dispatch) {
+        return window.fetch(resourcesBehavior.properties.apiUrls.value.getProducts)
+          .then(function(response) {
+            return response.json();
+          })
+          .then(function(products) {
+            dispatch(productsLoaded(toarrayBehavior._toArray(products)));
+          });
+      }
+
+      function editProduct(productId) {
+        return function(dispatch) {
+          var productUrl = resourcesBehavior.properties.apiUrls.value.getProduct(productId);
+
+          return window.fetch(productUrl)
+            .then(function(response) {
+              return response.json();
+            })
+            .then(function(product) {
+              dispatch(showEditedProduct(productId, product));
+            });
+        };
+      }
+
+      function showEditedProduct(productId, product) {
+        return {
+          type: 'open-product-editor',
+          productId: productId,
+          product: product
+        }
       }
     })();
   </script>

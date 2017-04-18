@@ -1,0 +1,30 @@
+<link rel="import" href="redux.html">
+<link rel="import" href="../../bower_components/app-route/app-location.html">
+
+<dom-module id="fp-routing-store">
+  <template>
+    <app-location path="[[path]]" on-path-changed="_navigated"></app-location>
+  </template>
+
+  <script>
+
+    Polymer({
+      is: 'fp-routing-store',
+      behaviors: [
+        FramappReduxStore
+      ],
+      properties: {
+        path: {
+          statePath: 'routing.path'
+        }
+      },
+      _navigated: function(e) {
+        this.dispatch({
+          type: 'navigation-occurred',
+          path: e.detail.value
+        });
+      }
+    });
+
+  </script>
+</dom-module>

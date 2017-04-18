@@ -12,6 +12,7 @@
   <link rel="lazy-import" group="main" href="../../bower_components/paper-icon-button/paper-icon-button.html">
   <link rel="lazy-import" group="main" href="../../bower_components/app-route/app-location.html">
   <link rel="lazy-import" group="main" href="../../bower_components/app-route/app-route.html">
+  <link rel="lazy-import" group="main" href="../stores/fp-routing-store.html">
 
   <link rel="lazy-import" group="fp-home-page" href="../fp-home-page.html">
   <link rel="lazy-import" group="fp-category-page" href="../categories/fp-category-page.html">
@@ -53,6 +54,7 @@
             }
           }
       </style>
+      <fp-routing-store></fp-routing-store>
       <app-location route="{{route}}"></app-location>
       <app-route route="{{route}}"
                  pattern="/:page"
