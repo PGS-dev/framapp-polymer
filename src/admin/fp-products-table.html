@@ -2,6 +2,7 @@
 <link rel="import" href="../../bower_components/app-route/app-location.html">
 <link rel="import" href="../../bower_components/paper-material/paper-material.html">
 <link rel="import" href="../../bower_components/paper-datatable/paper-datatable.html">
+<link rel="import" href="../../bower_components/paper-button/paper-button.html">
 <link rel="import" href="../stores/fp-products-store.html">
 
 <dom-module id="fp-products-table">
@@ -42,6 +43,7 @@
   Polymer({
    is: 'fp-products-table',
     properties: {
+      subroute: Object
     },
 
     _getIndex: function(item){
