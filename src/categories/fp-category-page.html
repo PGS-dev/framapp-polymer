@@ -37,7 +37,12 @@
     Polymer({
 
       is: 'fp-category-page',
+      properties: {
+        route: Object
+      },
+
       behaviors: [FramApp.LoadWhenSelected],
+
       _load: function() {
         this.$.store.loadProducts();
       }

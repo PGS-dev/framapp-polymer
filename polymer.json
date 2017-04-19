@@ -24,7 +24,8 @@
     "bower_components/webcomponentsjs/webcomponents-lite.js"
   ],
   "lint":{
-    "rules": [ "polymer-1" ]
+    "rules": [ "polymer-1" ],
+    "ignoreWarnings": ["databind-with-unknown-property"]
   },
   "builds": [{
     "bundle": true,

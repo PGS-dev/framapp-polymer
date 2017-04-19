@@ -1,6 +1,7 @@
 <link rel="import" href="../../bower_components/polymer/polymer.html">
 <link rel="import" href="../../bower_components/paper-material/paper-material.html">
 <link rel="import" href="../../bower_components/paper-datatable/paper-datatable.html">
+<link rel="import" href="../../bower_components/paper-button/paper-button.html">
 <link rel="import" href="../stores/fp-products-store.html">
 <link rel="import" href="../behaviors/selectable-behavior.html">
 
@@ -40,6 +41,9 @@
  <script>
   Polymer({
    is: 'fp-products-table',
+    properties: {
+      subroute: Object
+    },
 
     behaviors: [
       FramApp.LoadWhenSelected
