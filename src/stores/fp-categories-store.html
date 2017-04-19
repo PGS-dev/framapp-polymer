@@ -11,7 +11,10 @@
       Polymer({
 
         is: 'fp-categories-store',
-        behaviors: [FramappReduxStore, Polymer.AuthTokenStoreBehavior],
+        behaviors: [
+          FramappReduxStore,
+          Polymer.AuthTokenStoreBehavior
+        ],
         properties: {
           response: Object,
           categories: {

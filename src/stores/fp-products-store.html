@@ -10,7 +10,10 @@
       Polymer({
 
         is: 'fp-products-store',
-        behaviors: [FramappReduxStore, Polymer.AuthTokenStoreBehavior],
+        behaviors: [
+          FramappReduxStore,
+          Polymer.AuthTokenStoreBehavior
+        ],
         properties: {
           category: {
             type: Object,
