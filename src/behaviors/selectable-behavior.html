@@ -1,0 +1,27 @@
+<script>
+  window.FramApp = window.FramApp || {};
+
+  /**
+   *
+   * @polymerBehavior: FramApp.LoadWhenSelected
+   */
+  window.FramApp.LoadWhenSelected = {
+    properties: {
+      selected: {
+        type: Boolean,
+        observer: '_selectedChanged'
+      },
+      _isLoaded: {
+        readOnly: true,
+        value: false
+      }
+    },
+    _selectedChanged: function(selected) {
+      if(selected && !this._isLoaded) {
+        this._load();
+        this._set_isLoaded(true);
+      }
+    },
+    _load: function() {}
+  }
+</script>

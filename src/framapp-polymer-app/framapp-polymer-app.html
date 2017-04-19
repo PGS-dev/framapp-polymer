@@ -54,8 +54,7 @@
             }
           }
       </style>
-      <fp-routing-store></fp-routing-store>
-      <app-location route="{{route}}"></app-location>
+      <fp-routing-store route="{{route}}"></fp-routing-store>
       <app-route route="{{route}}"
                  pattern="/:page"
                  data="{{routeData}}"
@@ -84,6 +83,7 @@
                           role="main"
                           selected="[[routeData.page]]"
                           on-iron-select="_loadView"
+                          selected-attribute="selected"
                           attr-for-selected="name">
                           
                   <fp-category-page name="categories"

@@ -3,7 +3,7 @@
 
 <dom-module id="fp-routing-store">
   <template>
-    <app-location path="[[path]]" on-path-changed="_navigated"></app-location>
+    <app-location route="{{route}}" path="[[path]]" on-path-changed="_navigated"></app-location>
   </template>
 
   <script>
@@ -16,6 +16,9 @@
       properties: {
         path: {
           statePath: 'routing.path'
+        },
+        route: {
+          notify: true
         }
       },
       _navigated: function(e) {

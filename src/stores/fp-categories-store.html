@@ -28,7 +28,7 @@
         },
 
         loadCategories: function () {
-          this.dispatch(loadCategories);
+          this.dispatch(loadCategories());
         },
 
         editCategory: function (categoryId) {
@@ -51,7 +51,7 @@
             method: 'put',
             body: JSON.stringify(category)
           }).then(function() {
-            dispatch(loadCategories);
+            dispatch(showCategoryList());
           });
         };
       }
@@ -78,21 +78,30 @@
         }
       }
 
-      function showCategoryList(categories) {
+      function fillCategoryTable(categories) {
         return {
           type: 'categories-loaded',
           categories: categories
         }
       }
 
-      function loadCategories(dispatch) {
+      function showCategoryList() {
+        return {
+          type: 'open-category-list'
+        }
+      }
+
+      function loadCategories() {
+        return function (dispatch) {
+
           return window.fetch(resourcesBehavior.properties.apiUrls.value.getCategories)
             .then(function(response) {
               return response.json();
             })
             .then(function(categories) {
-              dispatch(showCategoryList(toarrayBehavior._toArray(categories)));
+              dispatch(fillCategoryTable(toarrayBehavior._toArray(categories)));
             });
+        };
       }
     })();
   </script>

@@ -6,6 +6,7 @@
 <link rel="import" href="../../bower_components/paper-button/paper-button.html">
 
 <link rel="import" href="../behaviors/resources-behavior.html">
+<link rel="import" href="../behaviors/selectable-behavior.html">
 
 <!--
 `fp-category-editor`
@@ -53,12 +54,16 @@
 
       is: 'fp-category-editor',
 
+      behaviors: [
+        FramApp.LoadWhenSelected
+      ],
+
       _submit: function() {
         this.$.store.saveCategory(this.selected.id, this.$.form.serialize());
       },
 
-      attached: function() {
-        if (!this.category && this.selected.id) {
+      _load: function() {
+        if(this.selected && this.selected.id) {
           this.$.store.editCategory(this.selected.id);
         }
       },
