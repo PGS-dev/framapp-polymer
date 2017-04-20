@@ -11,17 +11,19 @@
     "src/fp-login-component.html",
     "bower_components/paper-button/paper-button.html",
     "bower_components/paper-icon-button/paper-icon-button.html",
-    "bower_components/app-route/app-location.html",
+    "src/stores/fp-routing-store.html",
     "bower_components/app-route/app-route.html"
   ],
-  "sourceGlobs": [
+  "sources": [
    "src/**/*",
    "bower.json"
   ],
-  "includeDependencies": [
+  "extraDependencies": [
     "manifest.json",
     "images/*",
-    "bower_components/webcomponentsjs/webcomponents-lite.js"
+    "bower_components/webcomponentsjs/webcomponents-lite.js",
+    "node_modules/redux/dist/redux.min.js",
+    "node_modules/redux-thunk/dist/redux-thunk.min.js"
   ],
   "lint":{
     "rules": [ "polymer-1" ],

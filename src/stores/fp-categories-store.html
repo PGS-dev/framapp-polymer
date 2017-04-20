@@ -1,49 +1,111 @@
-<link rel="import" href="../../bower_components/iron-ajax/iron-ajax.html">
+<link rel="import" href="../../bower_components/auth-ajax/auth-ajax.html">
 <link rel="import" href="../behaviors/toarray-behavior.html">
 <link rel="import" href="../behaviors/resources-behavior.html">
+<link rel="import" href="redux.html">
 
 <dom-module id="fp-categories-store">
-  <template>
-    <iron-ajax id="categoriesSource"
-      url="[[apiUrls.getCategories]]"
-      handle-as="json"
-      on-last-response-changed="_storeCategories"></iron-ajax>
-  </template>
   <script>
 
     (function () {
-      var categories;
 
       Polymer({
 
         is: 'fp-categories-store',
-        behaviors: [toarrayBehavior, resourcesBehavior],
+        behaviors: [
+          FramApp.ReduxStore,
+          Polymer.AuthTokenStoreBehavior
+        ],
         properties: {
           response: Object,
           categories: {
             type: Array,
             notify: true,
-            computed: '_computeCategories(_recomputeHack)',
+            readOnly: true,
+            statePath: 'categories.items'
           },
-        },
-
-        ready: function () {
-          this._recomputeHack = 0;
-
-          if (!categories) {
-            this.$.categoriesSource.generateRequest();
+          editedCategory: {
+            notify: true,
+            readOnly: true,
+            statePath: 'categories.editedCategory'
           }
         },
 
-        _storeCategories: function(e) {
-          categories = this._toArray(e.detail.value);
-          this._recomputeHack++;
+        loadCategories: function () {
+          this.dispatch(loadCategories());
         },
 
-        _computeCategories: function() {
-          return categories;
-        }
+        editCategory: function (categoryId) {
+          this.dispatch(editCategory(categoryId));
+        },
+
+        saveCategory: function(categoryId, category) {
+          this.getAuthToken().then(function(token) {
+            this.dispatch(saveCategory(categoryId, category, token));
+          }.bind(this));
+        },
+
       });
+
+      function saveCategory(categoryId, category, token) {
+        return function(dispatch) {
+          var categoryUrl = resourcesBehavior.properties.apiUrls.value.getCategory(categoryId);
+
+          return window.fetch(categoryUrl + '?auth=' + token, {
+            method: 'put',
+            body: JSON.stringify(category)
+          }).then(function() {
+            dispatch(showCategoryList());
+          });
+        };
+      }
+
+      function editCategory(categoryId) {
+        return function(dispatch) {
+          var categoryUrl = resourcesBehavior.properties.apiUrls.value.getCategory(categoryId);
+
+          return window.fetch(categoryUrl)
+            .then(function(response) {
+              return response.json();
+            })
+            .then(function(category) {
+              dispatch(showEditedCategory(categoryId, category));
+            });
+        };
+      }
+
+      function showEditedCategory(categoryId, category) {
+        return {
+          type: 'open-category-editor',
+          categoryId: categoryId,
+          category: category
+        }
+      }
+
+      function fillCategoryTable(categories) {
+        return {
+          type: 'categories-loaded',
+          categories: categories
+        }
+      }
+
+      function showCategoryList() {
+        return {
+          type: 'open-category-list'
+        }
+      }
+
+      function loadCategories() {
+        return function (dispatch) {
+
+          return window.fetch(resourcesBehavior.properties.apiUrls.value.getCategories)
+            .then(function(response) {
+              return response.json();
+            })
+            .then(function(categories) {
+              dispatch(fillCategoryTable(toarrayBehavior._toArray(categories)));
+            });
+        };
+      }
     })();
   </script>
 </dom-module>

@@ -23,7 +23,7 @@
             }
 
         </style>
-        <fp-categories-store categories="{{categories}}"></fp-categories-store>
+        <fp-categories-store id="store" categories="{{categories}}"></fp-categories-store>
 
         <paper-collapse-item header="Categories" icon="icons:apps" opened>
             <iron-selector selected="{{category}}" attr-for-selected="name">
@@ -46,6 +46,10 @@
                     notify: true
                     }
             },
+
+          attached: function() {
+            this.$.store.loadCategories();
+          }
         });
     </script>
 </dom-module>

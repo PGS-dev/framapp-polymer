@@ -20,7 +20,8 @@
     "paper-datatable": "^0.9.8",
     "iron-form": "PolymerElements/iron-form#^1.1.4",
     "auth-ajax": "CaptainCodeman/auth-ajax#^0.0.3",
-    "lazy-imports": "Polymer/lazy-imports#^0.0.2"
+    "lazy-imports": "Polymer/lazy-imports#^0.0.2",
+    "polymer-redux": "^0.4.2"
   },
   "devDependencies": {
     "iron-component-page": "PolymerElements/iron-component-page#^1.0.0",
