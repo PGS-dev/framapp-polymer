@@ -1,10 +1,7 @@
 <link rel="import" href="../../bower_components/polymer-redux/polymer-redux.html">
-<script src="../../node_modules/redux/dist/redux.js"></script>
-<script src="../../node_modules/redux-thunk/dist/redux-thunk.js"></script>
 
 <script>
-  (function (Framapp) {
-
+  (function (FramApp) {
     var routingReducer = function (state, action) {
       if (!state) {
         return {
@@ -98,14 +95,14 @@
     });
 
     /**
-     * @polymerBehavior Framapp.ReduxStore
+     * @polymerBehavior FramApp.ReduxStore
      */
-    Framapp.ReduxStore = PolymerRedux(Redux.createStore(
+    FramApp.ReduxStore = PolymerRedux(Redux.createStore(
       reducer,
       Redux.applyMiddleware(
         ReduxThunk.default
       )
     ));
 
-  })(window.Framapp || (window.Framapp = {}));
+  })(window.FramApp || (window.FramApp = {}));
 </script>
