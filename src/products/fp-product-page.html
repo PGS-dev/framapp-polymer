@@ -29,7 +29,7 @@
     <app-route route="{{route}}"
                pattern="/:id"
                data="{{selected}}"></app-route>
-    <iron-ajax auto
+    <iron-ajax id="ajax"
                url="[[requestUrl]]"
                handle-as="json"
                last-response="{{product}}"></iron-ajax>
@@ -54,12 +54,17 @@
           product: Object,
           requestUrl: {
               type: String,
-              computed: '_getProduct(selected.id)'
+              computed: '_getProductUrl(selected.id)',
+              observer: '_loadProduct'
           },
       },
 
-      _getProduct: function(id){
+      _getProductUrl: function(id){
           return this.apiUrls.getProduct(id);
+      },
+
+      _loadProduct: function() {
+        this.$.ajax.generateRequest();
       }
     });
   </script>

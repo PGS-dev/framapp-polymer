@@ -24,7 +24,8 @@
                   role="main"
                   selected="[[routeData.page]]"
                   attr-for-selected="name"
-                  on-iron-select="_select">
+                  on-iron-select="_select"
+                  selected-attribute="selected">
 
         <fp-categories-table name="categories"></fp-categories-table>
         
@@ -44,9 +45,14 @@
       //Polymer.LazyImportsBehavior
     ],
     
+    properties: {
+      signedIn: Boolean,
+      route: Object
+    },
+    
     _select: function(e){
       //this.importLazyGroup(e.detail.item.localName);
-    }
+    },
   });
   </script>
 </dom-module>

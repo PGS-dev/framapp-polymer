@@ -1,8 +1,9 @@
 <link rel="import" href="../../bower_components/polymer/polymer.html">
-<link rel="import" href="../../bower_components/app-route/app-location.html">
 <link rel="import" href="../../bower_components/paper-material/paper-material.html">
 <link rel="import" href="../../bower_components/paper-datatable/paper-datatable.html">
+<link rel="import" href="../../bower_components/paper-button/paper-button.html">
 <link rel="import" href="../stores/fp-products-store.html">
+<link rel="import" href="../behaviors/selectable-behavior.html">
 
 <dom-module id="fp-products-table">
   <template>
@@ -18,8 +19,7 @@
         }
       }
     </style>
-      <app-location path="{{path}}"></app-location>
-      <fp-products-store products="{{products}}"></fp-products-store>
+      <fp-products-store id="store" products="{{products}}"></fp-products-store>
       <paper-material elevation="5">
         <paper-datatable data="{{products}}" >
           <paper-datatable-column header="Id">
@@ -31,7 +31,7 @@
           </paper-datatable-column>  
           <paper-datatable-column header="Action" property="id" >
               <template>
-                 <paper-button on-tap="_gotoProduct" data-product-url$="/admin/products/[[item.id]]" >Edit</paper-button>
+                 <paper-button on-tap="_gotoProduct" data-product-id$="[[item.id]]" >Edit</paper-button>
               </template>
           </paper-datatable-column>   
         </paper-datatable>
@@ -42,6 +42,15 @@
   Polymer({
    is: 'fp-products-table',
     properties: {
+      subroute: Object
+    },
+
+    behaviors: [
+      FramApp.LoadWhenSelected
+    ],
+
+    _load: function() {
+      this.$.store.loadProducts();
     },
 
     _getIndex: function(item){
@@ -49,7 +58,7 @@
     },
 
     _gotoProduct: function(event){
-      this.path = event.target.getAttribute('data-product-url');
+      this.$.store.editProduct(event.target.getAttribute('data-product-id'));
     }
   });
   </script>

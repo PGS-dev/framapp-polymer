@@ -1,0 +1,108 @@
+<link rel="import" href="../../bower_components/polymer-redux/polymer-redux.html">
+
+<script>
+  (function (FramApp) {
+    var routingReducer = function (state, action) {
+      if (!state) {
+        return {
+        };
+      }
+
+      switch (action.type) {
+        case 'open-category-editor':
+          return Object.assign({}, state, {
+            path: '/admin/category/' + action.categoryId
+          });
+        case 'open-product-editor':
+          return Object.assign({}, state, {
+            path: '/admin/product/' + action.productId
+          });
+        case 'navigation-occurred':
+          return Object.assign({}, state, {
+            path: action.path
+          });
+        case 'open-category-list':
+          return Object.assign({}, state, {
+            path: '/admin/categories'
+          });
+        default:
+          return state;
+      }
+    };
+
+    var categoriesReducer = function (state, action) {
+      if (!state) return {
+        isLoading: false,
+        items: []
+      };
+
+      switch (action.type) {
+        case 'load-categories':
+          return Object.assign({}, state, {
+            isLoading: true
+          });
+          break;
+        case 'categories-loaded':
+          return Object.assign({}, state, {
+            isLoading: false,
+            items: action.categories
+          });
+          break;
+        case 'open-category-editor':
+          return Object.assign({}, state, {
+            editedCategoryId: action.categoryId,
+            editedCategory: action.category
+          });
+          break;
+        case 'open-product-editor':
+          return Object.assign({}, state, {
+            editedProductId: action.productId,
+            editedProduct: action.product
+          });
+          break;
+        default:
+          return state;
+      }
+    };
+
+    var productsReducer = function(state, action) {
+      if(!state) return {
+        isLoading: false,
+        items: []
+      };
+
+      switch(action.type) {
+        case 'load-products':
+          return Object.assign({}, state, {
+            isLoading: true
+          });
+          break;
+        case 'products-loaded':
+          return Object.assign({}, state, {
+            isLoading: false,
+            items: action.data
+          });
+          break;
+        default:
+          return state;
+      }
+    };
+
+    var reducer = Redux.combineReducers({
+      products: productsReducer,
+      categories: categoriesReducer,
+      routing: routingReducer
+    });
+
+    /**
+     * @polymerBehavior FramApp.ReduxStore
+     */
+    FramApp.ReduxStore = PolymerRedux(Redux.createStore(
+      reducer,
+      Redux.applyMiddleware(
+        ReduxThunk.default
+      )
+    ));
+
+  })(window.FramApp || (window.FramApp = {}));
+</script>
