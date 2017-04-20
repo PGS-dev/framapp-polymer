@@ -3,7 +3,7 @@
 <script src="../../node_modules/redux-thunk/dist/redux-thunk.js"></script>
 
 <script>
-  (function (scope) {
+  (function (Framapp) {
 
     var routingReducer = function (state, action) {
       if (!state) {
@@ -98,14 +98,14 @@
     });
 
     /**
-     * @polymerBehavior FramappReduxStore
+     * @polymerBehavior Framapp.ReduxStore
      */
-    scope.FramappReduxStore = PolymerRedux(Redux.createStore(
+    Framapp.ReduxStore = PolymerRedux(Redux.createStore(
       reducer,
       Redux.applyMiddleware(
         ReduxThunk.default
       )
     ));
 
-  })(window);
+  })(window.Framapp || (window.Framapp = {}));
 </script>

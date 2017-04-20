@@ -5,13 +5,11 @@
 
 <dom-module id="fp-products-store">
   <script>
-    (function() {
-
       Polymer({
 
         is: 'fp-products-store',
         behaviors: [
-          FramappReduxStore,
+          Framapp.ReduxStore,
           Polymer.AuthTokenStoreBehavior
         ],
         properties: {
@@ -120,6 +118,5 @@
           product: product
         }
       }
-    })();
   </script>
 </dom-module>
