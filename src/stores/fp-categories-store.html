@@ -60,6 +60,7 @@
             method: 'put',
             body: JSON.stringify(category)
           }).then(function() {
+            dispatch(loadCategories());
             dispatch(showCategoryList());
           });
         };

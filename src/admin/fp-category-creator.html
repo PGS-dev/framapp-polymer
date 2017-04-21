@@ -1,14 +1,11 @@
 <link rel="import" href="../../bower_components/polymer/polymer.html">
-<link rel="import" href="../../bower_components/app-route/app-location.html">
-<link rel="import" href="../../bower_components/iron-ajax/iron-ajax.html">
-<link rel="import" href="../../bower_components/auth-ajax/auth-ajax.html">
 <link rel="import" href="../../bower_components/iron-form/iron-form.html">
 <link rel="import" href="../../bower_components/paper-card/paper-card.html">
 <link rel="import" href="../../bower_components/paper-input/paper-input.html">
 <link rel="import" href="../../bower_components/paper-button/paper-button.html">
 <link rel="import" href="../../bower_components/paper-dialog/paper-dialog.html">
 
-<link rel="import" href="../behaviors/resources-behavior.html">
+<link rel="import" href="../stores/fp-categories-store.html">
 
 <!--
 `fp-category-creator`
@@ -32,34 +29,29 @@
       }
       
     </style>
-    <app-location path="{{path}}"></app-location>
-    <iron-ajax id="ajax"
-               auto
-               handle-as="json"
-               on-response="_handleGetResponse"></iron-ajax>
+
+    <fp-categories-store id="store"></fp-categories-store>
 
     <paper-card>
       <div class="card-content">
-        <form is="iron-form" 
-              id="form" 
-              method="POST"
-              content-type="application/json"
-              on-iron-form-presubmit="_handlePreSubmit"
-              on-iron-form-response="_handleResponse">
         <paper-input id="categoryId"
                      name="categoryId"
                      label="Category id (seo slug)" 
                      value="{{categoryId}}"></paper-input>
-        <paper-input id="title"
-                     name="title"
-                     label="Name" 
-                     value="[[category.title]]"></paper-input>
-        <paper-input id="description"
-                     name="description" 
-                     label="Description" 
-                     value="{{category.description}}"></paper-input>
-        <paper-button raised 
-                      on-click="_submit">Submit</paper-button>
+        <form is="iron-form" 
+              id="form" 
+              method="POST"
+              content-type="application/json">
+          <paper-input id="title"
+                       name="title"
+                       label="Name" 
+                       value="[[category.title]]"></paper-input>
+          <paper-input id="description"
+                       name="description" 
+                       label="Description" 
+                       value="{{category.description}}"></paper-input>
+          <paper-button raised 
+                        on-click="_submit">Submit</paper-button>
         </form>
       </div>
     </paper-card>
@@ -74,39 +66,21 @@
     Polymer({
 
       is: 'fp-category-creator',
-      behaviors: [resourcesBehavior, Polymer.AuthTokenStoreBehavior],
       properties: {
       },
 
       _submit: function(event) {
-        this.$.ajax.url = this.apiUrls.getCategory(this.categoryId) + "?auth=" + this.authToken;
-        this.$.ajax.generateRequest();
-      },
+        var categoryId = this.categoryId;
+        var categories = this.$.store.categories.filter(function(cat){
+                                                          return cat.id == categoryId;
+                                                        });
 
-      _handleGetResponse: function(response){
-        if(!response.detail.response){
-          this.$.form.action = this.apiUrls.getCategory(this.categoryId) + "?auth=" + this.authToken;
-          this.$.form.submit();
-        }
-        else{
+        if(categories.length > 0){
           this.$.modal.open();
+        }else{
+          this.$.store.saveCategory(this.categoryId, this.$.form.serialize());
         }
       },
-
-      _handleResponse: function(response){
-        this.path = "/admin/categories";
-      },
-
-      _handlePreSubmit: function(e){
-        this.$.form.request.method = "PUT";
-        this.$.form.method = "PUT";
-      },
-
-      ready: function() {
-        this.getAuthToken().then(function(token) {
-          this.authToken = token;
-        }.bind(this));
-      }
     });
   </script>
 </dom-module>
