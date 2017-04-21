@@ -44,6 +44,12 @@
           }.bind(this));
         },
 
+        deleteCategory: function(categoryId){
+          this.getAuthToken().then(function(token){
+            this.dispatch(deleteCategory(categoryId, token));
+          }.bind(this));
+        }
+
       });
 
       function saveCategory(categoryId, category, token) {
@@ -105,6 +111,18 @@
               dispatch(fillCategoryTable(toarrayBehavior._toArray(categories)));
             });
         };
+      }
+
+      function deleteCategory(categoryId, token){
+        return function (dispatch){
+          var categoryUrl = resourcesBehavior.properties.apiUrls.value.getCategory(categoryId);
+
+          return window.fetch(categoryUrl + '?auth=' + token, {
+            method: 'DELETE'
+          }).then(function() {
+            dispatch(loadCategories());
+          });
+        }
       }
     })();
   </script>
