@@ -2,6 +2,7 @@
 
 <link rel="import" href="products/fp-product-card.html">
 <link rel="import" href="stores/fp-products-store.html">
+<link rel="import" href="behaviors/selectable-behavior.html">
 
 <!--
 `fp-home-page`
@@ -22,7 +23,7 @@
       }
     </style>
 
-        <fp-products-store products="{{_promoted}}" promoted-only="true"></fp-products-store>
+        <fp-products-store id="store" products="{{_promoted}}" promoted-only="true"></fp-products-store>
         <template is="dom-repeat" items="[[_promoted]]" as="product">
             <fp-product-card product="[[product]]"></fp-product-card>
         </template>
@@ -30,6 +31,10 @@
   <script>
     Polymer({
       is: 'fp-home-page',
+      behaviors: [FramApp.LoadWhenSelected],
+      _load: function() {
+        this.$.store.loadProducts();
+      }
     });
   </script>
 </dom-module>

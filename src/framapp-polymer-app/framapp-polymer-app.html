@@ -10,8 +10,8 @@
   <link rel="lazy-import" group="main" href="../fp-login-component.html">
   <link rel="lazy-import" group="main" href="../../bower_components/paper-button/paper-button.html">
   <link rel="lazy-import" group="main" href="../../bower_components/paper-icon-button/paper-icon-button.html">
-  <link rel="lazy-import" group="main" href="../../bower_components/app-route/app-location.html">
   <link rel="lazy-import" group="main" href="../../bower_components/app-route/app-route.html">
+  <!--<link rel="lazy-import" group="main" href="../stores/fp-routing-store.html">-->
 
   <link rel="lazy-import" group="fp-home-page" href="../fp-home-page.html">
   <link rel="lazy-import" group="fp-category-page" href="../categories/fp-category-page.html">
@@ -53,7 +53,7 @@
             }
           }
       </style>
-      <app-location route="{{route}}"></app-location>
+      <fp-routing-store route="{{route}}"></fp-routing-store>
       <app-route route="{{route}}"
                  pattern="/:page"
                  data="{{routeData}}"
@@ -82,6 +82,7 @@
                           role="main"
                           selected="[[routeData.page]]"
                           on-iron-select="_loadView"
+                          selected-attribute="selected"
                           attr-for-selected="name">
                           
                   <fp-category-page name="categories"
@@ -106,11 +107,12 @@
       attached: function() {
         this.async(function(){
           this.importLazyGroup('main');
+          this.importHref(this.resolveUrl('../stores/fp-routing-store.html'));
         });
       },
 
       _loadView: function(e) {
-        if (e.detail.value === 'product') {
+        if (e.detail.item.localName === 'fp-product-page') {
             this.importHref(this.resolveUrl('../products/fp-product-page.html'));
           } else {
             this.importLazyGroup(e.detail.item.localName);
