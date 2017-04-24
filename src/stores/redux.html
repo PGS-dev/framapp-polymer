@@ -54,12 +54,6 @@
             editedCategory: action.category
           });
           break;
-        case 'open-product-editor':
-          return Object.assign({}, state, {
-            editedProductId: action.productId,
-            editedProduct: action.product
-          });
-          break;
         default:
           return state;
       }
@@ -81,6 +75,12 @@
           return Object.assign({}, state, {
             isLoading: false,
             items: action.data
+          });
+          break;
+        case 'open-product-editor':
+          return Object.assign({}, state, {
+            editedProductId: action.productId,
+            editedProduct: action.product
           });
           break;
         default:
