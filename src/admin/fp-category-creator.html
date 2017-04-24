@@ -70,12 +70,7 @@
       },
 
       _submit: function(event) {
-        var categoryId = this.categoryId;
-        var categories = this.$.store.categories.filter(function(cat){
-                                                          return cat.id == categoryId;
-                                                        });
-
-        if(categories.length > 0){
+        if(this.$.store.categoryIdExists(this.categoryId)){
           this.$.modal.open();
         }else{
           this.$.store.saveCategory(this.categoryId, this.$.form.serialize());

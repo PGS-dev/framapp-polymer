@@ -48,6 +48,12 @@
           this.getAuthToken().then(function(token){
             this.dispatch(deleteCategory(categoryId, token));
           }.bind(this));
+        },
+
+        categoryIdExists: function(categoryId){
+          return this.categories.some(function(e) {
+            return e.id == categoryId;
+            })
         }
 
       });
