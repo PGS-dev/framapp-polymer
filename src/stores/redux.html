@@ -94,14 +94,16 @@
       routing: routingReducer
     });
 
+    var compose = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || Redux.compose;
+
     /**
      * @polymerBehavior FramApp.ReduxStore
      */
     FramApp.ReduxStore = PolymerRedux(Redux.createStore(
       reducer,
-      Redux.applyMiddleware(
+      compose(Redux.applyMiddleware(
         ReduxThunk.default
-      )
+      ))
     ));
 
   })(window.FramApp || (window.FramApp = {}));
