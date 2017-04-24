@@ -16,7 +16,7 @@
         }
       },
       _selectedChanged: function(selected) {
-        if(selected && !this._isLoaded) {
+        if(selected === true && !this._isLoaded) {
           this._load();
           this._set_isLoaded(true);
         }

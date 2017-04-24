@@ -26,8 +26,8 @@
       
     </style>
     <app-route route="{{route}}"
-               pattern="/:id"
-               data="{{selected}}"></app-route>
+               pattern="/:categoryId"
+               data="{{routeData}}"></app-route>
     <fp-categories-store id="store" edited-category="{{category}}"></fp-categories-store>
 
     <paper-card>
@@ -68,8 +68,8 @@
       },
 
       _load: function() {
-        if(this.selected && this.selected.id) {
-          this.$.store.editCategory(this.selected.id);
+        if(this.routeData && this.routeData.categoryId) {
+          this.$.store.editCategory(this.routeData.categoryId);
         }
       },
     });
