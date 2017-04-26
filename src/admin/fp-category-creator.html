@@ -1,0 +1,81 @@
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+<link rel="import" href="../../bower_components/iron-form/iron-form.html">
+<link rel="import" href="../../bower_components/paper-card/paper-card.html">
+<link rel="import" href="../../bower_components/paper-input/paper-input.html">
+<link rel="import" href="../../bower_components/paper-button/paper-button.html">
+<link rel="import" href="../../bower_components/paper-dialog/paper-dialog.html">
+
+<link rel="import" href="../stores/fp-categories-store.html">
+
+<!--
+`fp-category-creator`
+
+
+@demo ../demo/fp-category-creator-demo.html 
+-->
+
+<dom-module id="fp-category-creator">
+  <template>
+    <style>
+      :host {
+        display: block;
+        padding: 25px;
+        --paper-button: {
+          float: right;
+          margin: 10px 0;
+          background-color: rgb(52, 152, 219);
+          color: white;
+        }
+      }
+      
+    </style>
+
+    <fp-categories-store id="store"></fp-categories-store>
+
+    <paper-card>
+      <div class="card-content">
+        <paper-input id="categoryId"
+                     name="categoryId"
+                     label="Category id (seo slug)" 
+                     value="{{categoryId}}"></paper-input>
+        <form is="iron-form" 
+              id="form" 
+              method="POST"
+              content-type="application/json">
+          <paper-input id="title"
+                       name="title"
+                       label="Name" 
+                       value="[[category.title]]"></paper-input>
+          <paper-input id="description"
+                       name="description" 
+                       label="Description" 
+                       value="{{category.description}}"></paper-input>
+          <paper-button raised 
+                        on-click="_submit">Submit</paper-button>
+        </form>
+      </div>
+    </paper-card>
+    <paper-dialog id="modal">
+      <p>Category with the same Id exists</p>
+      <div class="buttons">
+        <paper-button dialog-confirm autofocus>Close</paper-button>
+      </div>
+    </paper-dialog>
+  </template>
+  <script>
+    Polymer({
+
+      is: 'fp-category-creator',
+      properties: {
+      },
+
+      _submit: function(event) {
+        if(this.$.store.categoryIdExists(this.categoryId)){
+          this.$.modal.open();
+        }else{
+          this.$.store.saveCategory(this.categoryId, this.$.form.serialize());
+        }
+      },
+    });
+  </script>
+</dom-module>

@@ -3,6 +3,7 @@
 <link rel="import" href="../../bower_components/paper-datatable/paper-datatable.html">
 <link rel="import" href="../../bower_components/paper-button/paper-button.html">
 
+<link rel="import" href="../behaviors/resources-behavior.html">
 <link rel="import" href="../stores/fp-categories-store.html">
 <link rel="import" href="../behaviors/selectable-behavior.html">
 
@@ -19,11 +20,28 @@
           color: white;
         }
       }
+      paper-button.add-button {
+        background-color: rgb(52, 152, 219);
+        color: white;
+        margin-top: 15px;
+        float: right;
+      };
     </style>
-      <fp-categories-store id="store" categories="{{categories}}"></fp-categories-store>
+      <fp-categories-store id="store" 
+                           categories="{{categories}}"
+                           transformations="{{transformations}}"></fp-categories-store>
+
+      <iron-ajax id="ajax"
+                 method="DELETE"
+                 handle-as="json"></iron-ajax>
+      <paper-input id="title"
+                   name="title" 
+                   label="Title" 
+                   value="{{transformations.title}}"></paper-input>
 
       <paper-material elevation="5">
-        <paper-datatable data="{{categories}}" >
+        <paper-datatable id="categoriesTable"
+                         data="{{categories}}" >
           <paper-datatable-column header="Id">
             <template>
                  {{_getIndex(item)}}
@@ -34,31 +52,50 @@
           <paper-datatable-column header="Action" property="id" >
               <template>
                  <paper-button on-tap="_gotoCategory" data-category-id$="[[item.id]]" >Edit</paper-button>
+                 <paper-button on-tap="_removeCategory" data-category-id$="[[item.id]]" >Remove</paper-button>
               </template>
           </paper-datatable-column>   
         </paper-datatable>
       </paper-material>
+      <a href="/admin/addCategory"><paper-button class="add-button" raised>Add</paper-button></a>
  </template>
  
  <script>
-  Polymer({
-   is: 'fp-categories-table',
+   Polymer({
+      is: 'fp-categories-table',
+      behaviors: [
+        FramApp.LoadWhenSelected
+      ],
+      properties:{
+        transformations:{
+          type: Object,
+          notify: true,
+          value: {filter: function(){}}
+        },
+      },
 
-    behaviors: [
-      FramApp.LoadWhenSelected
-    ],
+      attached: function(){
+        var parameters = this.transformations;
+        this.transformations.filter = function(e){
+          return e.title.includes(parameters.title);
+        };
+      },
 
-    _load: function() {
-      this.$.store.loadCategories();
-    },
+      _load: function() {
+        this.$.store.loadCategories();
+      },
 
-    _getIndex: function(item){
-      return this.categories.indexOf(item) + 1;
-    },
+      _getIndex: function(item){
+        return this.categories.indexOf(item) + 1;
+      },
 
-    _gotoCategory: function(event){
-      this.$.store.editCategory(event.target.getAttribute('data-category-id'));
-    },
-  });
+      _gotoCategory: function(event){
+        this.$.store.editCategory(event.target.getAttribute('data-category-id'));
+      },
+
+      _removeCategory: function(event){
+        this.$.store.deleteCategory(event.target.getAttribute('data-category-id'));
+      },
+    });
   </script>
 </dom-module>
