@@ -17,11 +17,17 @@
         ],
         properties: {
           response: Object,
-          categories: {
+          allCategories: {
             type: Array,
             notify: true,
             readOnly: true,
             statePath: 'categories.items'
+          },
+          categories:{
+            type: Array,
+            notify: true,
+            statePath: 'categories.items',
+            computed: "_applyFilters(allCategories, transformations.*)"
           },
           editedCategory: {
             notify: true,
@@ -51,11 +57,16 @@
         },
 
         categoryIdExists: function(categoryId){
-          return this.categories.some(function(e) {
+          return this.allCategories.some(function(e) {
             return e.id == categoryId;
-            })
-        }
+          });
+        },
 
+        _applyFilters: function(){
+          if(!!this.allCategories){
+            return this.allCategories.filter(this.transformations.filter);
+          }
+        },
       });
 
       function saveCategory(categoryId, category, token) {

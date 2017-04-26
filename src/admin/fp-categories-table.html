@@ -27,11 +27,17 @@
         float: right;
       };
     </style>
-      <fp-categories-store id="store" categories="{{categories}}"></fp-categories-store>
+      <fp-categories-store id="store" 
+                           categories="{{categories}}"
+                           transformations="{{transformations}}"></fp-categories-store>
 
       <iron-ajax id="ajax"
                  method="DELETE"
                  handle-as="json"></iron-ajax>
+      <paper-input id="title"
+                   name="title" 
+                   label="Title" 
+                   value="{{transformations.title}}"></paper-input>
 
       <paper-material elevation="5">
         <paper-datatable id="categoriesTable"
@@ -60,6 +66,20 @@
       behaviors: [
         FramApp.LoadWhenSelected
       ],
+      properties:{
+        transformations:{
+          type: Object,
+          notify: true,
+          value: {filter: function(){}}
+        },
+      },
+
+      attached: function(){
+        var parameters = this.transformations;
+        this.transformations.filter = function(e){
+          return e.title.includes(parameters.title);
+        };
+      },
 
       _load: function() {
         this.$.store.loadCategories();
