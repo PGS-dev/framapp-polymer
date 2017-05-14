@@ -45,6 +45,10 @@
           this.dispatch(editProduct(productsId));
         },
 
+        deleteProduct: function(productId){
+          this.dispatch(deleteProduct(productId));
+        },
+
         _computeProducts: function (products, category, promotedOnly) {
           var filters = [];
 
@@ -109,6 +113,12 @@
               dispatch(showEditedProduct(productId, product));
             });
         };
+      }
+
+      function deleteProduct(productId){
+        var productUrl = resourcesBehavior.properties.apiUrls.value.getProduct(productId);
+        
+        debugger; //here shoot productUrl with REST Delete and wait for 200 and resonse "null" as success
       }
 
       function showEditedProduct(productId, product) {
