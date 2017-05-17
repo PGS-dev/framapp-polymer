@@ -46,7 +46,9 @@
         },
 
         deleteProduct: function(productId){
-          this.dispatch(deleteProduct(productId));
+          this.getAuthToken().then(function(token){
+            this.dispatch(deleteProduct(productId, token));
+          }.bind(this));
         },
 
         _computeProducts: function (products, category, promotedOnly) {
@@ -115,10 +117,16 @@
         };
       }
 
-      function deleteProduct(productId){
+      function deleteProduct(productId, token){
         var productUrl = resourcesBehavior.properties.apiUrls.value.getProduct(productId);
-        
-        debugger; //here shoot productUrl with REST Delete and wait for 200 and resonse "null" as success
+
+        return window.fetch(productUrl + '?auth=' + token, {
+          method: 'delete',
+        }).then(function(response){
+          if(response.status != 200){
+            throw "Error during deleting product";
+          }
+        });
       }
 
       function showEditedProduct(productId, product) {
