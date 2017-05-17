@@ -4,6 +4,8 @@
 <link rel="import" href="../../bower_components/paper-button/paper-button.html">
 <link rel="import" href="../stores/fp-products-store.html">
 <link rel="import" href="../behaviors/selectable-behavior.html">
+<link rel="import" href="../../bower_components/paper-dialog/paper-dialog.html">
+
 
 <dom-module id="fp-products-table">
   <template>
@@ -32,10 +34,16 @@
           <paper-datatable-column header="Action" property="id" >
               <template>
                  <paper-button on-tap="_gotoProduct" data-product-id$="[[item.id]]" >Edit</paper-button>
+                 <paper-button on-tap="_removeProductDialog" data-product-id$="[[item.id]]" > Delete </paper-button>
               </template>
           </paper-datatable-column>   
         </paper-datatable>
       </paper-material>
+      <paper-dialog id="deleteProductDialog">
+        <h2>Are you sure u want to remove this product?</h2>
+        <paper-button dialog-dismiss>Nope</paper-button>
+        <paper-button id="deleteProductDialogApproveButton" data-product-id dialog-confirm on-tap="_removeProduct">Yep! KYLYM!</paper-button>
+      </paper-dialog>
  </template>
  
  <script>
@@ -56,6 +64,18 @@
 
     _gotoProduct: function(event){
       this.$.store.editProduct(event.target.getAttribute('data-product-id'));
+    },
+
+    _removeProductDialog: function(event){
+      var productId = event.target.getAttribute('data-product-id');
+      this.$.deleteProductDialogApproveButton.setAttribute('data-product-id', productId);
+      this.$.deleteProductDialog.open();
+    },
+
+    _removeProduct: function(event){
+      var productId = event.target.getAttribute('data-product-id');
+      this.$.store.deleteProduct(productId);
+      this.$.deleteProductDialogApproveButton.setAttribute('data-product-id', null);
     }
   });
   </script>
